@@ -12,11 +12,7 @@ declare interface Window {
 }
 
 // 在server中，全局对象持载在 global 对象上
-declare namespace NodeJS {
-  interface Global {
-    InitEnv: typeof InitEnv;
-  }
-}
+declare const global: {InitEnv: typeof InitEnv};
 
 // 定义获取全局设置的函数，为了在上线后可以由运维修改，该函数的实现放在/public/index.html中，以防止被 webpack 打包
 declare function getInitEnv(): {
