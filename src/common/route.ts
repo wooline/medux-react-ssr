@@ -83,3 +83,10 @@ export function toUrl(...args: any[]): string {
   }
   return url;
 }
+export function linkTo(e: React.MouseEvent<HTMLAnchorElement>) {
+  e.preventDefault();
+  const href = e.currentTarget.getAttribute('href') as string;
+  if (href && href !== '#') {
+    historyActions.push(href);
+  }
+}

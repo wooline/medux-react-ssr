@@ -4,10 +4,10 @@ import {DispatchProp, connect} from 'react-redux';
 import Icon, {IconClass} from 'components/Icon';
 import {ListItem, ListSummary} from 'entity/photo';
 import {RootState, actions} from 'modules';
-import {ViewNames, historyActions} from 'common/route';
+import {ViewNames, historyActions, toUrl} from 'common/route';
 
 import {ModuleNames} from 'modules/names';
-import {Pagination} from 'antd-mobile';
+import Pagination from 'components/Pagination';
 import React from 'react';
 import {RouteData} from '@medux/react-web-router/types/export';
 import {RouteParams} from '../../meta';
@@ -24,9 +24,6 @@ interface StateProps {
 let scrollTop = 0;
 
 class Component extends React.PureComponent<StateProps & DispatchProp> {
-  private onPageChange = (page: number) => {
-    historyActions.push({extend: this.props.routeData, params: {photos: {listSearch: {page}}}});
-  };
   private onSearch = (title: string) => {
     historyActions.push({extend: this.props.routeData, params: {photos: {listSearch: {title, page: 1}}}});
   };
@@ -75,7 +72,7 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
           </div>
           {listSummary && (
             <div className="g-pagination">
-              <Pagination current={listSummary.page} total={listSummary.totalPages} onChange={this.onPageChange} />
+              <Pagination baseUrl={toUrl({extend: this.props.routeData, params: {photos: {listSearch: {page: NaN}}}})} page={listSummary.page} totalPages={listSummary.totalPages} />
             </div>
           )}
         </div>

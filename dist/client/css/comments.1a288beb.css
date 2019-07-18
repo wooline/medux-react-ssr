@@ -1,0 +1,241 @@
+.comments-Details.g-modal .list-header .close-button {
+  display: flex;
+  align-items: center;
+}
+.comments-Details.g-modal .list-items > div:first-child {
+  background: #eee;
+  margin: 0;
+  padding-left: 1.6rem;
+  padding-right: 0.26667rem;
+}
+.comments-Details.g-modal .list-items > div:first-child .user {
+  font-weight: bold;
+}
+.comments-Details.g-modal .list-items > div:first-child .avatar {
+  left: 0.26667rem;
+}
+.comments-Details.g-modal .list-items > * {
+  margin: 0 0.53333rem;
+}
+
+/* flexbox */
+.am-flexbox {
+  text-align: left;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.am-flexbox.am-flexbox-dir-row {
+  flex-direction: row;
+}
+.am-flexbox.am-flexbox-dir-row-reverse {
+  flex-direction: row-reverse;
+}
+.am-flexbox.am-flexbox-dir-column {
+  flex-direction: column;
+}
+.am-flexbox.am-flexbox-dir-column .am-flexbox-item {
+  margin-left: 0;
+}
+.am-flexbox.am-flexbox-dir-column-reverse {
+  flex-direction: column-reverse;
+}
+.am-flexbox.am-flexbox-dir-column-reverse .am-flexbox-item {
+  margin-left: 0;
+}
+.am-flexbox.am-flexbox-nowrap {
+  flex-wrap: nowrap;
+}
+.am-flexbox.am-flexbox-wrap {
+  flex-wrap: wrap;
+}
+.am-flexbox.am-flexbox-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+.am-flexbox.am-flexbox-justify-start {
+  justify-content: flex-start;
+}
+.am-flexbox.am-flexbox-justify-end {
+  justify-content: flex-end;
+}
+.am-flexbox.am-flexbox-justify-center {
+  justify-content: center;
+}
+.am-flexbox.am-flexbox-justify-between {
+  justify-content: space-between;
+}
+.am-flexbox.am-flexbox-justify-around {
+  justify-content: space-around;
+}
+.am-flexbox.am-flexbox-align-start {
+  align-items: flex-start;
+}
+.am-flexbox.am-flexbox-align-end {
+  align-items: flex-end;
+}
+.am-flexbox.am-flexbox-align-center {
+  align-items: center;
+}
+.am-flexbox.am-flexbox-align-stretch {
+  align-items: stretch;
+}
+.am-flexbox.am-flexbox-align-baseline {
+  align-items: baseline;
+}
+.am-flexbox.am-flexbox-align-content-start {
+  align-content: flex-start;
+}
+.am-flexbox.am-flexbox-align-content-end {
+  align-content: flex-end;
+}
+.am-flexbox.am-flexbox-align-content-center {
+  align-content: center;
+}
+.am-flexbox.am-flexbox-align-content-between {
+  align-content: space-between;
+}
+.am-flexbox.am-flexbox-align-content-around {
+  align-content: space-around;
+}
+.am-flexbox.am-flexbox-align-content-stretch {
+  align-content: stretch;
+}
+.am-flexbox .am-flexbox-item {
+  box-sizing: border-box;
+  flex: 1 1;
+  margin-left: 0.21333rem;
+  min-width: 0.26667rem;
+}
+.am-flexbox .am-flexbox-item:first-child {
+  margin-left: 0;
+}
+
+.am-pagination-wrap {
+  font-size: 0.48rem;
+  color: #000;
+  background: none;
+  text-align: center;
+}
+.am-pagination-wrap .active {
+  color: #108ee9;
+}
+.am-pagination-wrap-btn {
+  text-align: center;
+}
+.am-pagination-wrap-btn-prev {
+  text-align: left;
+}
+.am-pagination-wrap-btn-next {
+  text-align: right;
+}
+.am-pagination-wrap-dot {
+  display: inline-block;
+  zoom: 1;
+}
+.am-pagination-wrap-dot > span {
+  display: block;
+  width: 0.21333rem;
+  height: 0.21333rem;
+  margin-right: 0.13333rem;
+  border-radius: 50%;
+  background: #ccc;
+}
+.am-pagination-wrap-dot-active > span {
+  background: #888;
+}
+
+.comments-List .list-header .on {
+  font-weight: bold;
+}
+.comments-List .list-header > * {
+  display: inline-block;
+  margin-right: 0.26667rem;
+}
+
+.comments {
+  height: 100%;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+}
+.comments > .wrap {
+  padding: 0.26667rem 0;
+  flex: 1 1 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.comments .list-header {
+  color: #666;
+  padding: 0.26667rem 0.4rem;
+}
+.comments .list-items .avatar {
+  position: absolute;
+  width: 1.06667rem;
+  height: 1.06667rem;
+  left: 0;
+  background-size: cover;
+  display: block;
+  border-radius: 0.8rem;
+  background-position: center center;
+}
+.comments .list-items .content {
+  padding-top: 0.08rem;
+  max-height: 4.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comments .list-items .user {
+  font-size: 0.34667rem;
+  color: #a0c400;
+}
+.comments .list-items .user .date {
+  font-size: 0.32rem;
+  padding-right: 0.13333rem;
+  float: right;
+  color: #999;
+}
+.comments .list-items .reply {
+  font-size: 0.32rem;
+  color: #999;
+}
+.comments .list-items .reply .act {
+  color: #007491;
+  text-decoration: underline;
+}
+.comments .list-items > * {
+  display: block;
+  line-height: 1.5;
+  margin: 0 0.26667rem;
+  padding: 0.4rem 0 0.37333rem 1.33333rem;
+  position: relative;
+}
+.comments .g-pagination {
+  margin: 0 0.26667rem;
+  border-top: 1Px solid #eee;
+}
+
+.comments-Editor {
+  background: #eee;
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 0.13333rem;
+}
+.comments-Editor .input {
+  flex: 1 1 auto;
+}
+.comments-Editor .input .am-input-item {
+  height: 1.01333rem;
+  min-height: 1.01333rem;
+}
+.comments-Editor .con {
+  width: 1.6rem;
+}
+.comments-Editor .con .am-button {
+  color: #fff;
+  margin-left: 0.13333rem;
+  height: 1.06667rem;
+  line-height: 1.06667rem;
+  font-size: 0.37333rem;
+}
+

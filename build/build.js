@@ -40,6 +40,6 @@ compiler.run((error, stats) => {
         process.exit(1);
       }
     }
-    fs.removeSync(path.join(pathsConfig.distServerPath, 'media'));
+    fs.removeSync(path.join(pathsConfig.distPath, 'server', 'media'));
   }
 });
