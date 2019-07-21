@@ -6,6 +6,7 @@ import {ListItem, ListSummary} from 'entity/photo';
 import {RootState, actions} from 'modules';
 import {ViewNames, historyActions, toUrl} from 'common/route';
 
+import LinkButton from 'components/LinkButton';
 import {ModuleNames} from 'modules/names';
 import Pagination from 'components/Pagination';
 import React from 'react';
@@ -33,23 +34,22 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
       this.onSearch('');
     }
   };
-  private onItemClick = (itemId: string) => {
+  private onItemClick = () => {
     // 记住当前滚动位置
     scrollTop = window.pageYOffset;
-    const {routeData} = this.props;
-    const paths = routeData.paths.slice(0, -1).concat(ViewNames.photosDetails);
-    historyActions.push({extend: routeData, paths, params: {photos: {itemId}}});
   };
 
   public render() {
-    const {showSearch, listSearch, listItems, listSummary} = this.props;
+    const {showSearch, listSearch, listItems, listSummary, routeData} = this.props;
     if (listSearch && listItems) {
+      const paths = routeData.paths.slice(0, -1).concat(ViewNames.photosDetails);
+      const itemBaseUrl = toUrl({extend: routeData, paths, params: {photos: {itemId: '---'}}});
       return (
         <div className={`${ModuleNames.photos}-List g-pic-list`}>
           <Search value={listSearch.title} onClose={this.onSearchClose} onSearch={this.onSearch} visible={showSearch} />
           <div className="list-items">
             {listItems.map(item => (
-              <div onClick={() => this.onItemClick(item.id)} key={item.id} className="g-pre-img">
+              <LinkButton onClick={this.onItemClick} href={itemBaseUrl.replace(/---/g, item.id)} key={item.id} className="g-pre-img">
                 <div style={{backgroundImage: `url(${item.coverUrl})`}}>
                   <h5 className="title">{item.title}</h5>
                   <div className="listImg" />
@@ -67,7 +67,7 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
                     </em>
                   </div>
                 </div>
-              </div>
+              </LinkButton>
             ))}
           </div>
           {listSummary && (
