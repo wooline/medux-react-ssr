@@ -5,9 +5,10 @@ import {DispatchProp, connect} from 'react-redux';
 import Icon, {IconClass} from 'components/Icon';
 import {RootState, moduleGetter} from 'modules';
 import {Route, Switch} from 'react-router-dom';
-import {ViewNames, historyActions} from 'common/route';
+import {ViewNames, toUrl} from 'common/route';
 
 import {ItemDetail} from 'entity/photo';
+import LinkButton from 'components/LinkButton';
 import {ModuleNames} from 'modules/names';
 import React from 'react';
 import {RouteParams} from '../../meta';
@@ -40,23 +41,19 @@ class Component extends React.PureComponent<StateProps & DispatchProp, State> {
   private onMoreRemark = () => {
     this.setState({moreDetail: !this.state.moreDetail});
   };
-  private onShowComment = () => {
-    const {itemDetail, showComment} = this.props;
-    const itemId = itemDetail!.id;
-    if (showComment) {
-      historyActions.push({
+  private onShowComment = (showComment: boolean) => {
+    const itemId = this.props.itemDetail!.id;
+    if (!showComment) {
+      return toUrl({
         paths: [ViewNames.appMain, ViewNames.photosDetails],
         params: {photos: {...this.props.routeParams, itemId}},
       });
     } else {
-      historyActions.push({
+      return toUrl({
         paths: [ViewNames.appMain, ViewNames.photosDetails, ViewNames.commentsMain, ViewNames.commentsList],
         params: {photos: {...this.props.routeParams}, comments: {articleType: 'photos', articleId: itemId}},
       });
     }
-  };
-  private onClose = () => {
-    historyActions.push({paths: [ViewNames.appMain, ViewNames.photosList], params: {photos: {...this.props.routeParams, itemId: ''}}});
   };
 
   public render() {
@@ -67,9 +64,9 @@ class Component extends React.PureComponent<StateProps & DispatchProp, State> {
         <div className={`${ModuleNames.photos}-Details g-details g-doc-width g-modal g-enter-in`}>
           <div className="subject">
             <h2>{itemDetail.title}</h2>
-            <span className="close-button" onClick={this.onClose}>
+            <LinkButton href={toUrl({paths: [ViewNames.appMain, ViewNames.photosList], params: {photos: {...this.props.routeParams, itemId: ''}}})} className="close-button">
               <MIcon size="md" type="cross-circle" />
-            </span>
+            </LinkButton>
           </div>
           <div className={'remark' + (moreDetail ? ' on' : '')} onClick={this.onMoreRemark}>
             {itemDetail.remark}
@@ -84,7 +81,7 @@ class Component extends React.PureComponent<StateProps & DispatchProp, State> {
             </Carousel>
           </div>
 
-          <div className="comment-bar" onClick={this.onShowComment}>
+          <LinkButton href={this.onShowComment(true)} className="comment-bar">
             <span>
               <Icon type={IconClass.HEART} />
               <br />
@@ -95,9 +92,9 @@ class Component extends React.PureComponent<StateProps & DispatchProp, State> {
               <br />
               {itemDetail.comments}
             </span>
-          </div>
+          </LinkButton>
           <div className={'comments-panel' + (showComment ? ' on' : '')}>
-            <div onClick={this.onShowComment} className="mask" />
+            <LinkButton href={this.onShowComment(false)} className="mask" />
             <div className="dialog">
               <Switch>
                 <Route exact={false} path="/:articleType/:articleId/comments" component={commentsMain} />

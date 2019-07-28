@@ -3,9 +3,10 @@ import './index.less';
 import {DispatchProp, connect} from 'react-redux';
 import {RootState, moduleGetter} from 'modules';
 import {Route, Switch} from 'react-router-dom';
-import {ViewNames, historyActions} from 'common/route';
+import {ViewNames, toUrl} from 'common/route';
 
 import {ItemDetail} from 'entity/video';
+import LinkButton from 'components/LinkButton';
 import {Icon as MIcon} from 'antd-mobile';
 import {ModuleNames} from 'modules/names';
 import React from 'react';
@@ -21,10 +22,6 @@ interface StateProps {
 }
 
 class Component extends React.PureComponent<StateProps & DispatchProp> {
-  private onClose = () => {
-    historyActions.push({paths: [ViewNames.appMain, ViewNames.videosList], params: {videos: {...this.props.routeParams, itemId: ''}}});
-  };
-
   public render() {
     const {itemDetail} = this.props;
     if (itemDetail) {
@@ -32,9 +29,9 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
         <div className={`${ModuleNames.videos}-Details g-details g-doc-width g-modal g-enter-in`}>
           <div className="subject">
             <h2 />
-            <span onClick={this.onClose} className="close-button">
+            <LinkButton href={toUrl({paths: [ViewNames.appMain, ViewNames.videosList], params: {videos: {...this.props.routeParams, itemId: ''}}})} className="close-button">
               <MIcon size="md" type="cross-circle" />
-            </span>
+            </LinkButton>
           </div>
           <div className="content">
             <video width="100%" height="100%" autoPlay={true} controls={true} preload="auto" muted={false} playsInline={true} poster={itemDetail.coverUrl}>

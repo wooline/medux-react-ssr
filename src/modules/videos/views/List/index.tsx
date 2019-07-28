@@ -4,10 +4,11 @@ import {DispatchProp, connect} from 'react-redux';
 import Icon, {IconClass} from 'components/Icon';
 import {ListItem, ListSummary} from 'entity/video';
 import {RootState, actions} from 'modules';
-import {ViewNames, historyActions} from 'common/route';
+import {ViewNames, historyActions, toUrl} from 'common/route';
 
+import LinkButton from 'components/LinkButton';
 import {ModuleNames} from 'modules/names';
-import {Pagination} from 'antd-mobile';
+import Pagination from 'components/Pagination';
 import React from 'react';
 import {RouteData} from '@medux/react-web-router/types/export';
 import {RouteParams} from '../../meta';
@@ -24,9 +25,6 @@ interface StateProps {
 let scrollTop = 0;
 
 class Component extends React.PureComponent<StateProps & DispatchProp> {
-  private onPageChange = (page: number) => {
-    historyActions.push({extend: this.props.routeData, params: {videos: {listSearch: {page}}}});
-  };
   private onSearch = (title: string) => {
     historyActions.push({extend: this.props.routeData, params: {videos: {listSearch: {title, page: 1}}}});
   };
@@ -36,24 +34,25 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
       this.onSearch('');
     }
   };
-  private onItemClick = (itemId: string) => {
+  private onItemClick = () => {
     // 记住当前滚动位置
     scrollTop = window.pageYOffset;
-    const {routeData} = this.props;
-    const paths = routeData.paths.slice(0, -1).concat(ViewNames.videosDetails, ViewNames.commentsMain, ViewNames.commentsList);
-    historyActions.push({extend: routeData, paths, params: {videos: {itemId}, comments: {articleType: 'videos', articleId: itemId}}});
   };
 
   public render() {
-    const {showSearch, listSearch, listItems, listSummary} = this.props;
-
+    const {showSearch, listSearch, listItems, listSummary, routeData} = this.props;
     if (listItems && listSearch) {
+      const itemBaseUrl = toUrl({
+        extend: routeData,
+        paths: [ViewNames.appMain, ViewNames.videosDetails, ViewNames.commentsMain, ViewNames.commentsList],
+        params: {videos: {itemId: '---'}, comments: {articleType: 'videos', articleId: '---'}},
+      });
       return (
         <div className={`${ModuleNames.videos}-List g-pic-list`}>
           <Search value={listSearch.title} onClose={this.onSearchClose} onSearch={this.onSearch} visible={showSearch} />
           <div className="list-items">
             {listItems.map(item => (
-              <div onClick={() => this.onItemClick(item.id)} key={item.id} className="g-pre-img">
+              <LinkButton onClick={this.onItemClick} href={itemBaseUrl.replace(/---/g, item.id)} key={item.id} className="g-pre-img">
                 <div style={{backgroundImage: `url(${item.coverUrl})`}}>
                   <h5 className="title">{item.title}</h5>
                   <div className="listImg" />
@@ -62,12 +61,12 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
                   </div>
                   <Icon className="icon-palyer" type={IconClass.PLAY_CIRCLE} />
                 </div>
-              </div>
+              </LinkButton>
             ))}
           </div>
           {listSummary && (
             <div className="g-pagination">
-              <Pagination current={listSummary.page} total={listSummary.totalPages} onChange={this.onPageChange} />
+              <Pagination baseUrl={toUrl({extend: this.props.routeData, params: {videos: {listSearch: {page: NaN}}}})} page={listSummary.page} totalPages={listSummary.totalPages} />
             </div>
           )}
         </div>

@@ -8,7 +8,9 @@
     "types-check": "tsc",
     "lint": "npm run eslint && npm run stylelint && npm run types-check",
     "start": "npm run lint && node build/start.js",
-    "build": "npm run lint && node build/build.js"
+    "build": "npm run lint && node build/build.js",
+    "site": "npm run lint && cross-env WEBSITE=site node build/build.js",
+    "build-demo": "node build/ssr-demo.js && npm run build && node build/express-demo.js"
   },
   "repository": "https://github.com/wooline/medux-demo-ssr",
   "homepage": "https://github.com/wooline/medux-demo-ssr",
@@ -36,8 +38,8 @@
   },
   "dependencies": {
     "@babel/runtime": "~7.4.5",
-    "@medux/react-web-router": "0.1.0-alpha.0",
-    "@medux/web-route-plan-a": "0.1.0-alpha.0",
+    "@medux/react-web-router": "0.1.0-alpha.2",
+    "@medux/web-route-plan-a": "0.1.0-alpha.2",
     "antd-mobile": "^2.2.13",
     "core-js": "~3.1.3",
     "indexof": "0.0.1",
@@ -46,8 +48,8 @@
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "@medux/dev-utils": "0.1.0-alpha.0",
-    "@medux/dev-pkg": "0.1.0-alpha.0",
+    "@medux/dev-utils": "0.1.0-alpha.1",
+    "@medux/dev-pkg": "0.1.0-alpha.1",
     "babel-plugin-import": "^1.12.0",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",

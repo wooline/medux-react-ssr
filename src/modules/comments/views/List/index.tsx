@@ -3,10 +3,11 @@ import './index.less';
 
 import {DispatchProp, connect} from 'react-redux';
 import {ListItem, ListSummary} from 'entity/comment';
-import {ViewNames, historyActions} from 'common/route';
+import {ViewNames, toUrl} from 'common/route';
 
+import LinkButton from 'components/LinkButton';
 import {ModuleNames} from 'modules/names';
-import {Pagination} from 'antd-mobile';
+import Pagination from 'components/Pagination';
 import React from 'react';
 import {RootState} from 'modules';
 import {RouteData} from '@medux/react-web-router/types/export';
@@ -21,37 +22,33 @@ interface StateProps {
 }
 let scrollTop = NaN;
 class Component extends React.PureComponent<StateProps & DispatchProp> {
-  private onPageChange = (page: number) => {
-    historyActions.push({extend: this.props.routeData, params: {comments: {listSearch: {page}}}});
-  };
   private onSortChange = (isNewest: boolean) => {
-    historyActions.push({extend: this.props.routeData, params: {comments: {listSearch: {page: 1, isNewest}}}});
+    return toUrl({extend: this.props.routeData, params: {comments: {listSearch: {page: 1, isNewest}}}});
   };
-  private onItemClick = (itemId: string) => {
+  private onItemClick = () => {
     // 记住当前滚动位置
     const dom = findDOMNode(this) as HTMLElement;
     scrollTop = (dom.parentNode as HTMLDivElement).scrollTop;
-    const {routeData} = this.props;
-    const paths = routeData.paths.slice(0, -1).concat(ViewNames.commentsDetails);
-    historyActions.push({extend: routeData, paths, params: {comments: {itemId}}});
   };
 
   public render() {
-    const {listSearch, listItems, listSummary} = this.props;
+    const {listSearch, listItems, listSummary, routeData} = this.props;
     if (listItems) {
+      const paths = routeData.paths.slice(0, -1).concat(ViewNames.commentsDetails);
+      const itemBaseUrl = toUrl({extend: routeData, paths, params: {comments: {itemId: '---'}}});
       return (
         <div className={`${ModuleNames.comments}-List`}>
           <div className="list-header">
-            <div onClick={() => this.onSortChange(false)} className={listSearch.isNewest ? '' : 'on'}>
+            <LinkButton href={this.onSortChange(false)} className={listSearch.isNewest ? '' : 'on'}>
               最热
-            </div>
-            <div onClick={() => this.onSortChange(true)} className={listSearch.isNewest ? 'on' : ''}>
+            </LinkButton>
+            <LinkButton href={this.onSortChange(true)} className={listSearch.isNewest ? 'on' : ''}>
               最新
-            </div>
+            </LinkButton>
           </div>
           <div className="list-items">
             {listItems.map(item => (
-              <div onClick={() => this.onItemClick(item.id)} className="g-border-top" key={item.id}>
+              <LinkButton onClick={this.onItemClick} href={itemBaseUrl.replace(/---/g, item.id)} className="g-border-top" key={item.id}>
                 <div className="avatar" style={{backgroundImage: `url(${item.avatarUrl})`}} />
                 <div className="user">
                   {item.username}
@@ -61,12 +58,12 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
                 <span className="reply">
                   <span className="act">回复</span>({item.replies})
                 </span>
-              </div>
+              </LinkButton>
             ))}
           </div>
           {listSummary && (
             <div className="g-pagination">
-              <Pagination current={listSummary.page} total={listSummary.totalPages} onChange={this.onPageChange} />
+              <Pagination baseUrl={toUrl({extend: this.props.routeData, params: {comments: {listSearch: {page: NaN}}}})} page={listSummary.page} totalPages={listSummary.totalPages} />
             </div>
           )}
         </div>

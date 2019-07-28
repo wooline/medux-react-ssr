@@ -42,8 +42,7 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
   public render() {
     const {showSearch, listSearch, listItems, listSummary, routeData} = this.props;
     if (listSearch && listItems) {
-      const paths = routeData.paths.slice(0, -1).concat(ViewNames.photosDetails);
-      const itemBaseUrl = toUrl({extend: routeData, paths, params: {photos: {itemId: '---'}}});
+      const itemBaseUrl = toUrl({extend: routeData, paths: [ViewNames.appMain, ViewNames.photosDetails], params: {photos: {itemId: '---'}}});
       return (
         <div className={`${ModuleNames.photos}-List g-pic-list`}>
           <Search value={listSearch.title} onClose={this.onSearchClose} onSearch={this.onSearch} visible={showSearch} />
