@@ -1,5 +1,5 @@
-import {RouteConfig, ToUrl} from '@medux/react-web-router/types/export';
-import {toUrl as baseToUrl, getHistoryActions, setRouteConfig} from '@medux/react-web-router';
+import {RouteConfig, ToBrowserUrl} from '@medux/react-web-router/types/export';
+import {getBrowserHistoryActions, setRouteConfig, toBrowserUrl} from '@medux/react-web-router';
 
 import {ModuleNames} from 'modules/names';
 import {RootState} from 'modules';
@@ -8,7 +8,7 @@ import {defaultRouteParams as messages} from 'modules/messages/meta';
 import {defaultRouteParams as photos} from 'modules/photos/meta';
 import {defaultRouteParams as videos} from 'modules/videos/meta';
 
-export const historyActions = getHistoryActions<RootState['route']['data']['params']>();
+export const historyActions = getBrowserHistoryActions<RootState['route']['data']['params']>();
 
 export const defaultRouteParams: {[K in ModuleNames]: any} = {
   app: null,
@@ -66,7 +66,7 @@ export const routeConfig: RouteConfig = {
   ],
 };
 
-export const toUrl: ToUrl<RootState['route']['data']['params']> = baseToUrl;
+export const toUrl: ToBrowserUrl<RootState['route']['data']['params']> = toBrowserUrl;
 
 export function linkTo(e: React.MouseEvent<HTMLAnchorElement>) {
   e.preventDefault();
