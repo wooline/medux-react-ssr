@@ -72,7 +72,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   // uncatched错误会触发@@framework/ERROR，监听并发送给后台
   // 监听外部模块的Action，不需要手动触发，所以请使用protected或private
   @effect(null) // 不需要loading，设置为null
-  protected async [ActionTypes.F_ERROR](error: CustomError) {
+  protected async [ActionTypes.Error](error: CustomError) {
     if (error.code === '401') {
       this.dispatch(this.actions.putShowLoginPop(true));
     } else if (error.code === '404') {
@@ -86,7 +86,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   }
   // 监听自已的INIT Action，做一些异步数据请求，不需要手动触发，所以请使用protected或private
   @effect()
-  protected async [`this/${ActionTypes.M_INIT}`]() {
+  protected async [`this/${ActionTypes.MInit}`]() {
     const [projectConfig, curUser] = await Promise.all([settingsService.api.getSettings(), sessionService.api.getCurUser()]);
     this.updateState({
       projectConfig,

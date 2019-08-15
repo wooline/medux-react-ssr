@@ -29,7 +29,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   // 同时监听初始化INIT和路由变化的action
   // 参数 null 表示不需要监控loading状态，searchList时会监控loading
   @effect(null)
-  protected async [`this/${ActionTypes.M_INIT},${ActionTypes.F_ROUTE_CHANGE}`]() {
+  protected async [`this/${ActionTypes.MInit},${ActionTypes.RouteChange}`]() {
     if (this.rootState.route.data.views.messages) {
       const {
         views,
