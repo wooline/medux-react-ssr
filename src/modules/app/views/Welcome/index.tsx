@@ -1,10 +1,7 @@
 import './index.less';
 
-import {DispatchProp, connect} from 'react-redux';
-import {RootState, actions} from 'modules';
 import {StartupPageConfig, StartupStep} from 'entity/global';
 
-import {ModuleNames} from 'modules/names';
 import React from 'react';
 
 interface Props extends DispatchProp {
@@ -34,7 +31,7 @@ class Component extends React.PureComponent<Props> {
     const linkPops = linkUrl ? {target: '_blank', href: linkUrl} : {};
 
     return (
-      <div className={`${ModuleNames.app}-Welcome g-doc-width g-pre-img ${className}`}>
+      <div className={`${moduleNames.app}-Welcome g-doc-width g-pre-img ${className}`}>
         <a className="link" {...linkPops} style={{backgroundImage: `url(${imageUrl})`}} />
         <div
           className="count"
@@ -102,4 +99,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default connect(mapStateToProps)(Component);
+export default reduxConnect(mapStateToProps)(Component);

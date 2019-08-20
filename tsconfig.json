@@ -15,7 +15,7 @@
     "strict": true,
     "newLine": "LF",
     "lib": ["es2017", "dom"],
-    "types": [],
+    "types": ["./typings/rc-form"],
     "removeComments": true,
     "jsx": "react",
     "resolveJsonModule": true,

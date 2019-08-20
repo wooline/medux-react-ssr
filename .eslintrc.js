@@ -3,11 +3,6 @@ module.exports = {
       browser: true,
       node: false,
     },
-    globals: {
-      getInitEnv: true,
-      InitEnv: true,
-      Promise: true,
-    },
     parser: '@typescript-eslint/parser',
     extends: [
       'plugin:react/recommended',
@@ -25,7 +20,6 @@ module.exports = {
       },
     },
     rules: {
-      'no-undef': 'error',
       'sort-imports': 'error',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-empty-interface': 'off',

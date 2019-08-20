@@ -187,10 +187,10 @@ const serverConfig = {
         test: /\.(ts|tsx)$/,
         include: pathsConfig.moduleSearch,
         use: [
-          'babel-loader?cacheDirectory=true',
           {
             loader: require.resolve('@medux/dev-utils/dist/webpack-loader/server-replace-async'),
           },
+          'babel-loader?cacheDirectory=true',
         ],
       },
       {

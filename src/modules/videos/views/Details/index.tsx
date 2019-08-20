@@ -1,18 +1,13 @@
 import './index.less';
 
-import {DispatchProp, connect} from 'react-redux';
-import {RootState, moduleGetter} from 'modules';
 import {Route, Switch} from 'react-router-dom';
-import {ViewNames, toUrl} from 'common/route';
 
 import {ItemDetail} from 'entity/video';
 import LinkButton from 'components/LinkButton';
 import {Icon as MIcon} from 'antd-mobile';
-import {ModuleNames} from 'modules/names';
 import React from 'react';
 import {RouteParams} from '../../meta';
 import {findDOMNode} from 'react-dom';
-import {loadView} from '@medux/react';
 
 const commentsMain = loadView(moduleGetter, 'comments', 'Main');
 
@@ -26,10 +21,10 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
     const {itemDetail} = this.props;
     if (itemDetail) {
       return (
-        <div className={`${ModuleNames.videos}-Details g-details g-doc-width g-modal g-enter-in`}>
+        <div className={`${moduleNames.videos}-Details g-details g-doc-width g-modal g-enter-in`}>
           <div className="subject">
             <h2 />
-            <LinkButton href={toUrl({paths: [ViewNames.appMain, ViewNames.videosList], params: {videos: {...this.props.routeParams, itemId: ''}}})} className="close-button">
+            <LinkButton href={toUrl({paths: [viewNames.appMain, viewNames.videosList], params: {videos: {...this.props.routeParams, itemId: ''}}})} className="close-button">
               <MIcon size="md" type="cross-circle" />
             </LinkButton>
           </div>
@@ -74,4 +69,4 @@ const mapStateToProps: (state: RootState) => StateProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Component);
+export default reduxConnect(mapStateToProps)(Component);

@@ -1,15 +1,10 @@
 /* eslint-disable react/no-find-dom-node */
 import './index.less';
 
-import {DispatchProp, connect} from 'react-redux';
-
 import {ItemDetail} from 'entity/comment';
 import {Icon as MIcon} from 'antd-mobile';
-import {ModuleNames} from 'modules/names';
 import React from 'react';
-import {RootState} from 'modules';
 import {findDOMNode} from 'react-dom';
-import {historyActions} from 'common/route';
 
 interface StateProps {
   itemDetail: ItemDetail | undefined;
@@ -24,7 +19,7 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
     const {itemDetail} = this.props;
     if (itemDetail) {
       return (
-        <div className={`${ModuleNames.comments}-Details g-modal g-enter-in`}>
+        <div className={`${moduleNames.comments}-Details g-modal g-enter-in`}>
           <div className="list-header">
             <div onClick={this.onBack} className="close-button">
               <MIcon size="md" type="left" />
@@ -86,4 +81,4 @@ const mapStateToProps: (state: RootState) => StateProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Component);
+export default reduxConnect(mapStateToProps)(Component);

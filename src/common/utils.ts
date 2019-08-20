@@ -1,11 +1,12 @@
-import {isServer} from '@medux/core';
-
 export type ExtractArray<T extends any[]> = T[Extract<keyof T, number>];
 export type OmitSelf<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 let inited = false;
 export function setInited() {
   inited = true;
+}
+export function isServer(): boolean {
+  return typeof window === 'undefined';
 }
 export function extract<T, K extends keyof T, U extends K[], P extends ExtractArray<U>>(target: T, ...args: U): Pick<T, P> & {$: OmitSelf<T, P>} {
   const clone = {...target};
@@ -60,4 +61,11 @@ export function pickEqual<T, P extends T, K extends keyof T>(obj1: T, obj2: P, p
 
 export function reference(data: any) {
   return data;
+}
+export function linkTo(e: React.MouseEvent<HTMLAnchorElement>) {
+  e.preventDefault();
+  const href = e.currentTarget.getAttribute('href') as string;
+  if (href && href !== '#') {
+    historyActions.push(href);
+  }
 }

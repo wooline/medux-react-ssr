@@ -4,8 +4,8 @@ import request from 'common/request';
 export class API {
   public getSettings() {
     return request<ProjectConfig>('get', '/ajax/project-config').then(projectConfig => {
-      projectConfig.logoUrl = InitEnv.clientPublicPath + projectConfig.logoUrl;
-      projectConfig.startupPage.imageUrl = InitEnv.clientPublicPath + projectConfig.startupPage.imageUrl;
+      projectConfig.logoUrl = initEnv.clientPublicPath + projectConfig.logoUrl;
+      projectConfig.startupPage.imageUrl = initEnv.clientPublicPath + projectConfig.startupPage.imageUrl;
       return projectConfig;
     });
   }

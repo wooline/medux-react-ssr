@@ -1,15 +1,12 @@
 import * as sessionService from './api/session';
 import * as settingsService from './api/settings';
 
-import {ActionTypes, BaseModelHandlers, LoadingState, effect, reducer} from '@medux/react-web-router';
+import {ActionTypes, BaseModelHandlers, BaseModelState, LoadingState, effect, reducer} from '@medux/react-web-router';
 import {ProjectConfig, StartupStep} from 'entity/global';
 
-import {BaseModelState} from '@medux/react-web-router/types/export';
 import {CurUser} from 'entity/session';
-import {CustomError} from 'common/Errors';
-import {RootState} from 'modules';
+import {CustomError} from 'entity/common';
 import {Toast} from 'antd-mobile';
-import {historyActions} from 'common/route';
 
 // 定义本模块的State类型
 export interface State extends BaseModelState {

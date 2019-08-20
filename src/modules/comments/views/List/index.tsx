@@ -1,21 +1,16 @@
 /* eslint-disable react/no-find-dom-node */
 import './index.less';
 
-import {DispatchProp, connect} from 'react-redux';
 import {ListItem, ListSummary} from 'entity/comment';
-import {ViewNames, toUrl} from 'common/route';
 
 import LinkButton from 'components/LinkButton';
-import {ModuleNames} from 'modules/names';
 import Pagination from 'components/Pagination';
 import React from 'react';
-import {RootState} from 'modules';
-import {RouteData} from '@medux/react-web-router/types/export';
 import {RouteParams} from '../../meta';
 import {findDOMNode} from 'react-dom';
 
 interface StateProps {
-  routeData: RouteData;
+  routeData: BaseRouteData;
   listSearch: RouteParams['listSearch'];
   listItems: ListItem[] | undefined;
   listSummary: ListSummary | undefined;
@@ -34,10 +29,10 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
   public render() {
     const {listSearch, listItems, listSummary, routeData} = this.props;
     if (listItems) {
-      const paths = routeData.paths.slice(0, -1).concat(ViewNames.commentsDetails);
+      const paths = routeData.paths.slice(0, -1).concat(viewNames.commentsDetails);
       const itemBaseUrl = toUrl({extend: routeData, paths, params: {comments: {itemId: '---'}}});
       return (
-        <div className={`${ModuleNames.comments}-List`}>
+        <div className={`${moduleNames.comments}-List`}>
           <div className="list-header">
             <LinkButton href={this.onSortChange(false)} className={listSearch.isNewest ? '' : 'on'}>
               最热
@@ -98,4 +93,4 @@ const mapStateToProps: (state: RootState) => StateProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Component);
+export default reduxConnect(mapStateToProps)(Component);

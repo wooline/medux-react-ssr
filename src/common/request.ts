@@ -1,6 +1,6 @@
 import axios, {AxiosError, AxiosRequestConfig, Method} from 'axios';
 
-import {CustomError} from 'common/Errors';
+import {CustomError} from 'entity/common';
 
 function handleError(error: AxiosError) {
   const httpErrorCode = error.response ? error.response.status : 0;
@@ -28,10 +28,10 @@ export default function ajax<T>(method: Method, url: string, params: {[key: stri
       return '';
     }
   });
-  Object.keys(InitEnv.apiServerPath).some(key => {
+  Object.keys(initEnv.apiServerPath).some(key => {
     const reg = new RegExp(key);
     if (reg.test(url)) {
-      url = url.replace(reg, InitEnv.apiServerPath[key]);
+      url = url.replace(reg, initEnv.apiServerPath[key]);
       return true;
     } else {
       return false;

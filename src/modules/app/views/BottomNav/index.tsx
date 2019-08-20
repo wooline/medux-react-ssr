@@ -1,13 +1,10 @@
 import './index.less';
 
-import {DispatchProp, connect} from 'react-redux';
 import Icon, {IconClass} from 'components/Icon';
-import {ViewNames, historyActions, toUrl} from 'common/route';
 
 import React from 'react';
-import {RootState} from 'modules';
 import {TabBar} from 'antd-mobile';
-import {UnauthorizedError} from 'common/Errors';
+import {UnauthorizedError} from 'entity/common';
 import {errorAction} from '@medux/react-web-router';
 import {uniqueKey} from 'common/utils';
 
@@ -21,9 +18,9 @@ const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => e.preventDefault();
 class Component extends React.PureComponent<Props> {
   public render() {
     const {views, dispatch} = this.props;
-    const photosUrl = toUrl({paths: [ViewNames.appMain, ViewNames.photosList], params: {photos: {_listKey: uniqueKey()}}});
-    const videosUrl = toUrl({paths: [ViewNames.appMain, ViewNames.videosList], params: {videos: {_listKey: uniqueKey()}}});
-    const messagesUrl = toUrl({paths: [ViewNames.appMain, ViewNames.messagesList], params: {messages: {_listKey: uniqueKey()}}});
+    const photosUrl = toUrl({paths: [viewNames.appMain, viewNames.photosList], params: {photos: {_listKey: uniqueKey()}}});
+    const videosUrl = toUrl({paths: [viewNames.appMain, viewNames.videosList], params: {videos: {_listKey: uniqueKey()}}});
+    const messagesUrl = toUrl({paths: [viewNames.appMain, viewNames.messagesList], params: {messages: {_listKey: uniqueKey()}}});
     const PhotosLink = (
       <a href={photosUrl} onClick={onClick}>
         <Icon type={IconClass.PICTURE} />
@@ -89,4 +86,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default connect(mapStateToProps)(Component);
+export default reduxConnect(mapStateToProps)(Component);

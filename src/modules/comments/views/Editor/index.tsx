@@ -1,14 +1,10 @@
 import './index.less';
 
 import {Button, InputItem, Toast} from 'antd-mobile';
-import {DispatchProp, connect} from 'react-redux';
-import {RootState, actions} from 'modules';
+import {RCForm, createForm} from 'rc-form';
 
-import {ModuleNames} from 'modules/names';
-import {RCForm} from 'entity/common';
 import React from 'react';
-import {UnauthorizedError} from 'common/Errors';
-import {createForm} from 'rc-form';
+import {UnauthorizedError} from 'entity/common';
 import {errorAction} from '@medux/react-web-router';
 
 interface Props extends DispatchProp, RCForm {
@@ -54,7 +50,7 @@ class Component extends React.PureComponent<Props> {
       ],
     });
     return commentId ? (
-      <div className={`${ModuleNames.comments}-Editor`}>
+      <div className={`${moduleNames.comments}-Editor`}>
         <div className="input">
           <InputItem placeholder="我来说两句..." {...content} />
         </div>
@@ -78,4 +74,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default connect(mapStateToProps)(createForm()(Component));
+export default reduxConnect(mapStateToProps)(createForm()(Component));

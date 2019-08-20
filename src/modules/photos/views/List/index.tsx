@@ -1,21 +1,16 @@
 import './index.less';
 
-import {DispatchProp, connect} from 'react-redux';
 import Icon, {IconClass} from 'components/Icon';
 import {ListItem, ListSummary} from 'entity/photo';
-import {RootState, actions} from 'modules';
-import {ViewNames, historyActions, toUrl} from 'common/route';
 
 import LinkButton from 'components/LinkButton';
-import {ModuleNames} from 'modules/names';
 import Pagination from 'components/Pagination';
 import React from 'react';
-import {RouteData} from '@medux/react-web-router/types/export';
 import {RouteParams} from '../../meta';
 import Search from 'components/Search';
 
 interface StateProps {
-  routeData: RouteData;
+  routeData: BaseRouteData;
   showSearch: boolean;
   listSearch: RouteParams['listSearch'];
   listItems: ListItem[] | undefined;
@@ -42,9 +37,9 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
   public render() {
     const {showSearch, listSearch, listItems, listSummary, routeData} = this.props;
     if (listSearch && listItems) {
-      const itemBaseUrl = toUrl({extend: routeData, paths: [ViewNames.appMain, ViewNames.photosDetails], params: {photos: {itemId: '---'}}});
+      const itemBaseUrl = toUrl({extend: routeData, paths: [viewNames.appMain, viewNames.photosDetails], params: {photos: {itemId: '---'}}});
       return (
-        <div className={`${ModuleNames.photos}-List g-pic-list`}>
+        <div className={`${moduleNames.photos}-List g-pic-list`}>
           <Search value={listSearch.title} onClose={this.onSearchClose} onSearch={this.onSearch} visible={showSearch} />
           <div className="list-items">
             {listItems.map(item => (
@@ -104,4 +99,4 @@ const mapStateToProps: (state: RootState) => StateProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Component);
+export default reduxConnect(mapStateToProps)(Component);
