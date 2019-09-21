@@ -1,9 +1,7 @@
-import './index.less';
-
 import React from 'react';
 
-const NotFound: React.SFC<{}> = () => (
-  <div className="comp-NotFound">
+const NotFound: React.FunctionComponent<{}> = () => (
+  <div>
     <h1>Not Found</h1>
   </div>
 );

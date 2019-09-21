@@ -1,9 +1,26 @@
+import {GetFieldDecoratorOptions, WrappedFormUtils} from 'antd/lib/form/Form';
+
+import {Store} from 'redux';
+import {message as antdMessage} from 'antd';
+
+export const message = {
+  success: (content: string) => {
+    antdMessage.success(content);
+  },
+  error: (content: string) => {
+    antdMessage.error(content);
+  },
+};
 export type ExtractArray<T extends any[]> = T[Extract<keyof T, number>];
 export type OmitSelf<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 let inited = false;
-export function setInited() {
+export function setInited(store: Store) {
   inited = true;
+  store.dispatch({type: 'app/ClientInited'});
+}
+export function getInited() {
+  return inited;
 }
 export function isServer(): boolean {
   return typeof window === 'undefined';
@@ -62,10 +79,22 @@ export function pickEqual<T, P extends T, K extends keyof T>(obj1: T, obj2: P, p
 export function reference(data: any) {
   return data;
 }
-export function linkTo(e: React.MouseEvent<HTMLAnchorElement>) {
-  e.preventDefault();
-  const href = e.currentTarget.getAttribute('href') as string;
-  if (href && href !== '#') {
-    historyActions.push(href);
-  }
+
+export function getFormDecorators<D>(form: WrappedFormUtils, fields: {[key in keyof D]?: GetFieldDecoratorOptions}, initValues: {[key in keyof D]?: any}) {
+  type Keys = keyof typeof fields;
+  const decorators = {};
+  Object.keys(fields).forEach(key => {
+    const item: GetFieldDecoratorOptions = fields[key];
+    item.initialValue = initValues[key];
+    decorators[key] = form.getFieldDecorator(key, fields[key]);
+  });
+  return decorators as {[K in Keys]: (node: React.ReactNode) => React.ReactNode};
 }
+export const metaKeys = {
+  HomePathname: '/',
+  LoginPathname: '/login',
+  UserHomePathname: '/user',
+  SessionIDSessionStorageKey: 'SessionID',
+  LoginRedirectSessionStorageKey: 'LoginRedirectTo',
+  ClientInitedAction: 'app/ClientInited',
+};

@@ -1,26 +1,10 @@
-import {RootState as BaseState, RouteConfig, ToBrowserUrl, getBrowserHistoryActions, setRouteConfig, toBrowserUrl} from '@medux/react-web-router';
-
-import {defaultRouteParams as comments} from 'modules/comments/meta';
-import {exportActions} from '@medux/react-web-router';
-import {defaultRouteParams as messages} from 'modules/messages/meta';
-import {defaultRouteParams as photos} from 'modules/photos/meta';
-import {defaultRouteParams as videos} from 'modules/videos/meta';
+import {loadView as BaseLoadView, RootState as BaseState, LoadView, RouteConfig, exportActions, getBrowserHistory, setRouteConfig} from '@medux/react-web-router';
 
 export enum moduleNames {
   app = 'app',
-  comments = 'comments',
-  photos = 'photos',
-  videos = 'videos',
-  messages = 'messages',
 }
 
-const defaultRouteParams: {[K in moduleNames]: any} = {
-  app: null,
-  photos,
-  videos,
-  messages,
-  comments,
-};
+const defaultRouteParams: {[K in moduleNames]?: any} = {};
 setRouteConfig({defaultRouteParams});
 
 // 定义模块的加载方案，同步或者异步均可
@@ -28,71 +12,60 @@ export const moduleGetter = {
   app: () => {
     return import(/* webpackChunkName: "app" */ 'modules/app');
   },
-  comments: () => {
-    return import(/* webpackChunkName: "comments" */ 'modules/comments');
-  },
-  photos: () => {
-    return import(/* webpackChunkName: "photos" */ 'modules/photos');
-  },
-  videos: () => {
-    return import(/* webpackChunkName: "videos" */ 'modules/videos');
-  },
-  messages: () => {
-    return import(/* webpackChunkName: "messages" */ 'modules/messages');
-  },
 };
 
 export const actions = exportActions(moduleGetter);
 
 export type RootState = BaseState<typeof moduleGetter>;
 
-export const historyActions = getBrowserHistoryActions<RootState['route']['data']['params']>();
+export const loadView: LoadView<typeof moduleGetter> = BaseLoadView;
+
+export const {historyActions, toUrl} = getBrowserHistory<RootState['route']['data']['params']>();
 
 export enum viewNames {
   appMain = 'app.Main',
-  photosList = 'photos.List',
-  photosDetails = 'photos.Details',
-  videosList = 'videos.List',
-  videosDetails = 'videos.Details',
-  commentsMain = 'comments.Main',
-  commentsList = 'comments.List',
-  commentsDetails = 'comments.Details',
-  messagesList = 'messages.List',
 }
 
 export const routeConfig: RouteConfig = {
   '/': [
-    viewNames.appMain,
+    'app.Main',
     {
-      '/photos': viewNames.photosList,
-      '/photos/:itemId': [
-        viewNames.photosDetails,
+      '/login': 'app.Login',
+      '/register': 'app.Register',
+      '/user': [
+        'userLayout.Main',
         {
-          '/:articleType/:articleId/comments': [
-            viewNames.commentsMain,
-            {
-              '/:articleType/:articleId/comments': viewNames.commentsList,
-              '/:articleType/:articleId/comments/:itemId': viewNames.commentsDetails,
-            },
-          ],
+          '/user/requirements': 'requirements.Main',
         },
       ],
-      '/videos': viewNames.videosList,
-      '/videos/:itemId': [
-        viewNames.videosDetails,
+      '/poster': [
+        'posterLayout.Main',
         {
-          '/:articleType/:articleId/comments': [
-            viewNames.commentsMain,
-            {
-              '/:articleType/:articleId/comments': viewNames.commentsList,
-              '/:articleType/:articleId/comments/:itemId': viewNames.commentsDetails,
-            },
-          ],
+          '/poster/home': 'posterHome.Main',
+          '/poster/voiceprint_1n': 'voiceprint_1n.Main',
+          '/poster/voiceprint_11': 'voiceprint_11.Main',
+          '/poster/voiceprint_nn': 'voiceprint_nn.Main',
+          '/poster/voiceprint_clustering': 'voiceprint_clustering.Main',
+          '/poster/expansion_cleaning': 'expansion_cleaning.Main',
+          '/poster/expansion_emotion': 'expansion_emotion.Main',
+          '/poster/expansion_humanlike': 'expansion_humanlike.Main',
+          '/poster/expansion_separation': 'expansion_separation.Main',
+          '/poster/expansion_sex': 'expansion_sex.Main',
+          '/poster/biometric_asr': 'biometric_asr.Main',
+          '/poster/biometric_lip': 'biometric_lip.Main',
+          '/poster/biometric_face': 'biometric_face.Main',
+          '/poster/biometric_voice': 'biometric_voice.Main',
+          '/poster/aap': 'aap.Main',
+          '/poster/aat': 'aat.Main',
+          '/poster/asrtran': 'asrtran.Main',
+          '/poster/nlpanalyze': 'nlpanalyze.Main',
+          '/poster/tts': 'tts.Main',
+          '/poster/cooperationCase': 'cooperationCase.Main',
+          '/poster/ai_open': 'ai_open.Main',
+          '/poster/oneStopCustom': 'oneStopCustom.Main',
+          '/poster/openEco': 'openEco.Main',
         },
       ],
-      '/messages': viewNames.messagesList,
     },
   ],
 };
-
-export const toUrl: ToBrowserUrl<RootState['route']['data']['params']> = toBrowserUrl;

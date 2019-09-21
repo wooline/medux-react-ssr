@@ -1,19 +1,25 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs-extra');
-const pathsConfig = require('./config/path.conifg');
+const pathsConfig = require('./path.conifg');
+const webpackConfig = require('./webpack.config');
+const jsonFormat = require('json-format');
+
 require('asset-require-hook')({
-  extensions: ['jpg', 'jpeg', 'png', 'gif'],
+  extensions: ['jpg', 'jpeg', 'png', 'gif', 'svg'],
 });
 
 const appPackage = require(path.join(pathsConfig.rootPath, './package.json'));
 
-const webpackConfig = require(path.join(pathsConfig.configPath, './webpack.config.prod'));
-
-const compiler = webpack(appPackage.devServer.ssr ? webpackConfig : webpackConfig[0]);
+const compiler = webpack(appPackage.ssr ? webpackConfig : webpackConfig[0]);
 
 fs.emptyDirSync(pathsConfig.distPath);
 fs.copySync(pathsConfig.publicPath, pathsConfig.distPath, {dereference: true});
+fs.copySync(pathsConfig.envPublicPath, pathsConfig.distPath, {dereference: true});
+
+const env = require(path.join(pathsConfig.envPath, './env'));
+const envFile = path.join(pathsConfig.distPath, './env.json');
+fs.writeFileSync(envFile, jsonFormat(env, {type: 'space'}), 'utf8');
 
 compiler.run((error, stats) => {
   if (error) {

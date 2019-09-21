@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="shortcut icon" href="$$ClientPublicPath$$client/favicon.png" />
+    <title>%title%-Medux</title>
+    <style>
+      html,
+      body,
+      #root {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+    </style>
+
+    <script type="text/javascript"></script>
+    <!-- {server-script} -->
+    <script type="text/javascript">
+      (function() {
+        global.initEnv = $$ServerGlobal$$;
+      })();
+    </script>
+    <script type="text/javascript">
+      (function() {
+        window.initEnv = $$ClientGlobal$$;
+      })();
+    </script>
+  </head>
+
+  <body>
+    <!-- {response-chunk} -->
+    <div id="root"><!-- {html} --></div>
+    <!-- {script} -->
+  </body>
+</html>

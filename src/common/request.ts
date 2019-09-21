@@ -1,19 +1,25 @@
-import axios, {AxiosError, AxiosRequestConfig, Method} from 'axios';
+import axios, {AxiosError, AxiosResponse, Method} from 'axios';
 
 import {CustomError} from 'entity/common';
 
-function handleError(error: AxiosError) {
-  const httpErrorCode = error.response ? error.response.status : 0;
-  const responseData = error.response ? error.response.data : '';
+const request = axios.create();
 
-  const errorMessage = responseData && responseData.message ? responseData.message : `failed to call ${error.config.url}`;
-  throw new CustomError(errorMessage, httpErrorCode.toString(), responseData);
-}
+request.interceptors.request.use(request => {
+  const sessionid = sessionStorage.getItem(metaKeys.SessionIDSessionStorageKey);
+  Object.assign(request.data, {sessionid});
+  return request;
+});
 
-axios.interceptors.response.use(
-  response => response,
-  error => {
-    handleError(error);
+request.interceptors.response.use(
+  (response: AxiosResponse<any>) => {
+    return response;
+  },
+  (error: AxiosError<{message: string}>) => {
+    const httpErrorCode = error.response ? error.response.status : 0;
+    const responseData = error.response ? error.response.data : '';
+
+    const errorMessage = responseData && responseData.message ? responseData.message : `failed to call ${error.config.url}`;
+    throw new CustomError(errorMessage, httpErrorCode.toString(), responseData);
   }
 );
 
@@ -38,7 +44,5 @@ export default function ajax<T>(method: Method, url: string, params: {[key: stri
     }
   });
 
-  const config: AxiosRequestConfig = {method, url, params, data};
-
-  return axios.request(config).then(response => response.data);
+  return request.request({method, url, params, data}).then(response => response.data);
 }

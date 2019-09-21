@@ -1,26 +1,17 @@
-const env = process.env.NODE_ENV;
 module.exports = {
   presets: [
-    env === 'production' && 'minify',
     [
       '@babel/preset-env',
       {
         loose: true,
         modules: false,
-        ...(env === 'library'
-          ? {
-              targets: {
-                esmodules: true,
-              },
-            }
-          : {useBuiltIns: 'usage', corejs: 3}),
       },
     ],
     '@babel/preset-react',
     '@babel/preset-typescript',
   ].filter(Boolean),
   plugins: [
-    ['import', {libraryName: 'antd-mobile', style: 'css'}],
+    ['import', {libraryName: 'antd', libraryDirectory: 'es', style: 'css'}],
     '@babel/plugin-syntax-dynamic-import',
     ['@babel/plugin-proposal-decorators', {legacy: false, decoratorsBeforeExport: true}],
     ['@babel/plugin-proposal-class-properties', {loose: true}],
