@@ -1,6 +1,6 @@
+import {isServer, metaKeys} from './common/utils';
+
 import React from 'react';
-import {connect} from 'react-redux';
-import {isServer} from './common/utils';
 import {loadView} from '@medux/react-web-router';
 const Loading = () => <div className="viewLoader">Loading</div>;
 ((data: {[key: string]: any}) => {
@@ -8,4 +8,4 @@ const Loading = () => <div className="viewLoader">Loading</div>;
   Object.keys(data).forEach(key => {
     g[key] = data[key];
   });
-})({loadView: (moduleName: string, viewName: never) => (loadView as any)(moduleName, viewName, Loading), reduxConnect: connect});
+})({metaKeys, loadView: (moduleName: string, viewName: string) => (loadView as any)(moduleName, viewName, Loading)});

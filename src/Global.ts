@@ -4,8 +4,6 @@ import './Prepose';
 import {actions, historyActions, loadView, moduleNames, toUrl, viewNames} from './modules';
 import {isServer, message, metaKeys} from './common/utils';
 
-import {connect} from 'react-redux';
-
 type HistoryActions = typeof historyActions;
 type ToUrl = typeof toUrl;
 type Actions = typeof actions;
@@ -17,7 +15,6 @@ type Message = typeof message;
 
 declare global {
   type ModuleNames = EnumModuleNames;
-  //type MetaKeys = EnumMetaKeys;
   type ViewNames = EnumViewNames;
   type RootState = import('./modules').RootState;
   type RouteData = RootState['route']['data'];
@@ -37,7 +34,6 @@ declare global {
   const moduleNames: ModuleNames;
   const viewNames: ViewNames;
   const metaKeys: MetaKeys;
-  const reduxConnect: typeof connect;
   const historyActions: HistoryActions;
   const toUrl: ToUrl;
   const global: any;

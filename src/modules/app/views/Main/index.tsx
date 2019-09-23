@@ -10,6 +10,7 @@ import {Modal} from 'antd';
 import NotFound from 'components/NotFound';
 import React from 'react';
 import Startup from '../Startup';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -20,7 +21,8 @@ interface StateProps {
   showRegisterPop: boolean;
   showNotFoundPop: boolean;
 }
-
+// <Redirect exact path="/poster" to="/poster/home" />
+// <Redirect exact path="/user" to="/user/home" />
 class Component extends React.PureComponent<StateProps & DispatchProp> {
   private onCloseLoginPop = () => {
     this.props.dispatch(actions.app.putShowLoginPop(false));
@@ -35,8 +37,6 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
         <>
           <Switch>
             <Redirect exact path="/" to="/poster/home" />
-            <Redirect exact path="/poster" to="/poster/home" />
-            <Redirect exact path="/user" to="/user/home" />
             <Route component={NotFound} />
           </Switch>
           <Modal visible={showLoginPop} onCancel={this.onCloseLoginPop} title="请登录" closable={true}>
@@ -62,4 +62,4 @@ const mapStateToProps: (state: RootState) => StateProps = state => {
   };
 };
 
-export default reduxConnect(mapStateToProps)(Component);
+export default connect(mapStateToProps)(Component);

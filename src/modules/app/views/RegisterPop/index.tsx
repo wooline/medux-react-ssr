@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 interface Props {}
 
@@ -8,4 +9,4 @@ class Component extends React.PureComponent<Props> {
   }
 }
 
-export default reduxConnect()(Component);
+export default connect()(Component);

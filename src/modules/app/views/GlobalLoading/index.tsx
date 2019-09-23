@@ -1,5 +1,6 @@
 import {LoadingState} from '@medux/react-web-router';
 import React from 'react';
+import {connect} from 'react-redux';
 
 interface StateProps {
   globalLoading: LoadingState;
@@ -17,4 +18,4 @@ const mapStateToProps: (state: RootState) => StateProps = state => {
     globalLoading: state.app!.loading.global,
   };
 };
-export default reduxConnect(mapStateToProps)(Component);
+export default connect(mapStateToProps)(Component);

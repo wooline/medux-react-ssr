@@ -16,6 +16,7 @@ const compiler = webpack(appPackage.ssr ? webpackConfig : webpackConfig[0]);
 fs.emptyDirSync(pathsConfig.distPath);
 fs.copySync(pathsConfig.publicPath, pathsConfig.distPath, {dereference: true});
 fs.copySync(pathsConfig.envPublicPath, pathsConfig.distPath, {dereference: true});
+fs.copySync(pathsConfig.mockPath, path.join(pathsConfig.distPath, './mock'), {dereference: true});
 
 const env = require(path.join(pathsConfig.envPath, './env'));
 const envFile = path.join(pathsConfig.distPath, './env.json');
