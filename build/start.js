@@ -2,17 +2,16 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const path = require('path');
-const pathsConfig = require('./config/path.conifg');
+const pathsConfig = require('./path.conifg');
 require('asset-require-hook')({
   extensions: ['jpg', 'jpeg', 'png', 'gif'],
 });
+const webpackConfig = require('./webpack.config');
+const devServerConfig = require('./webpackDevServer.config');
+const {baseConf} = require(path.join(pathsConfig.rootPath, './package.json'));
+const {server} = require(path.join(pathsConfig.envPath, './env'));
 
-const appPackage = require(path.join(pathsConfig.rootPath, './package.json'));
-
-const webpackConfig = require(path.join(pathsConfig.configPath, './webpack.config.dev'));
-const devServerConfig = require(path.join(pathsConfig.configPath, './webpackDevServer.config'));
-
-const [, , port] = appPackage.devServer.url.split(/:\/*/);
+const [, , port] = server.split(/:\/*/);
 
 webpackConfig[0].entry.unshift(`webpack-dev-server/client?http://0.0.0.0:${port}`, 'webpack/hot/dev-server');
 
@@ -20,7 +19,7 @@ function clearConsole() {
   process.stdout.write(process.platform === 'win32' ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H');
 }
 
-const compiler = webpack(appPackage.devServer.ssr ? webpackConfig : webpackConfig[0]);
+const compiler = webpack(baseConf.ssr ? webpackConfig : webpackConfig[0]);
 
 const devServer = new WebpackDevServer(compiler, devServerConfig);
 devServer.listen(port, '0.0.0.0', error => {
@@ -29,7 +28,7 @@ devServer.listen(port, '0.0.0.0', error => {
     process.exit(1);
   }
   clearConsole();
-  console.info(chalk`...starting {red development server} on {green ${appPackage.devServer.url}/} \n`);
+  console.info(chalk`...starting {red development server} on {green ${server}/} \n`);
   return null;
 });
 ['SIGINT', 'SIGTERM'].forEach(sig => {

@@ -2,6 +2,8 @@ import {loadView as BaseLoadView, RootState as BaseState, LoadView, RouteConfig,
 
 export enum moduleNames {
   app = 'app',
+  posterLayout = 'postLayout',
+  posterHome = 'postHome',
 }
 
 const defaultRouteParams: {[K in moduleNames]?: any} = {};
@@ -11,6 +13,12 @@ setRouteConfig({defaultRouteParams});
 export const moduleGetter = {
   app: () => {
     return import(/* webpackChunkName: "app" */ 'modules/app');
+  },
+  posterLayout: () => {
+    return import(/* webpackChunkName: "posterLayout" */ 'modules/poster/posterLayout');
+  },
+  posterHome: () => {
+    return import(/* webpackChunkName: "posterHome" */ 'modules/poster/posterHome');
   },
 };
 

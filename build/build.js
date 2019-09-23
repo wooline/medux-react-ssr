@@ -9,9 +9,9 @@ require('asset-require-hook')({
   extensions: ['jpg', 'jpeg', 'png', 'gif', 'svg'],
 });
 
-const appPackage = require(path.join(pathsConfig.rootPath, './package.json'));
+const {baseConf} = require(path.join(pathsConfig.rootPath, './package.json'));
 
-const compiler = webpack(appPackage.ssr ? webpackConfig : webpackConfig[0]);
+const compiler = webpack(baseConf.ssr ? webpackConfig : webpackConfig[0]);
 
 fs.emptyDirSync(pathsConfig.distPath);
 fs.copySync(pathsConfig.publicPath, pathsConfig.distPath, {dereference: true});

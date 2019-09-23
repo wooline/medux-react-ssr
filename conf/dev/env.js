@@ -1,9 +1,9 @@
-const {clientGlobal, serverGlobal, proxyMaps, serverUrl, mock} = require('../env.base');
+const {clientGlobal, serverGlobal, proxy, server, mock} = require('../env.base');
 
 module.exports = {
   clientGlobal,
   serverGlobal,
-  proxyMaps,
-  serverUrl,
+  proxy,
+  server,
   mock,
 };

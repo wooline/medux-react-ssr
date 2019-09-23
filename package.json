@@ -7,8 +7,8 @@
     "eslint": "eslint \"./src/**/*.ts\"",
     "types-check": "tsc",
     "lint": "npm run eslint && npm run stylelint && npm run types-check",
-    "start": "npm run lint && cross-env NODE_ENV=development node build/start.js",
-    "build": "npm run lint && cross-env NODE_ENV=production node build/build.js",
+    "start": "npm run lint && cross-env NODE_ENV=development SITE=local node build/start.js",
+    "build": "npm run lint && cross-env NODE_ENV=production SITE=local node build/build.js",
     "site": "npm run lint && cross-env WEBSITE=site node build/build.js",
     "build-demo": "node build/ssr-demo.js && npm run build && node build/express-demo.js"
   },
@@ -23,8 +23,25 @@
   "browserslist": [
     "ie >= 9"
   ],
-  "mock": true,
-  "ssr": true,
+  "baseConf": {
+    "siteName": "Medux",
+    "clientPublicPath": "/",
+    "server": "http://localhost:7445",
+    "apiServer": "http://localhost:7446",
+    "mock": true,
+    "ssr": true,
+    "proxy": {
+      "/ajax/**": {
+        "target": "http://localhost:7446",
+        "pathRewrite": {
+          "^/ajax": ""
+        },
+        "xfwd": true,
+        "secure": false,
+        "changeOrigin": true
+      }
+    }
+  },
   "dependencies": {
     "@babel/runtime": "~7.4.5",
     "@medux/react-web-router": "~0.2.6",

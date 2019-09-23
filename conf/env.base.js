@@ -1,35 +1,20 @@
-const appPackage = require('../package.json');
-
-const mock = !!appPackage.mock;
-const serverUrl = 'http://localhost:7445';
-const apiUrl = 'http://localhost:7446';
+const {baseConf} = require('../package.json');
+const {siteName, clientPublicPath, version, mock, server, proxy} = baseConf;
 
 const clientGlobal = {
-  siteName: 'Medux',
-  clientPublicPath: '/',
-  version: '1.0.0',
+  siteName,
+  version,
+  clientPublicPath,
   apiServerPath: {'/ajax/': '/ajax/'},
 };
 const serverGlobal = {
   ...clientGlobal,
-  apiServerPath: {'/ajax/': `${serverUrl}/ajax/`},
-};
-const proxyMaps = {
-  '/ajax/**': {
-    target: apiUrl,
-    pathRewrite: {
-      '^/ajax': '',
-    },
-    xfwd: true,
-    secure: false,
-    changeOrigin: true,
-  },
+  apiServerPath: {'/ajax/': `${server}/ajax/`},
 };
 module.exports = {
-  proxyMaps,
-  serverUrl,
+  proxy,
+  server,
   mock,
-  apiUrl,
   clientGlobal,
   serverGlobal,
 };
