@@ -1059,7 +1059,7 @@
   resolved "https://registry.yarnpkg.com/@medux/dev-utils/-/dev-utils-0.2.7.tgz#c81ec1027b1fbe513f63487916c690827e768713"
   integrity sha512-aKCduat9MjtJlPJFGtqskQlRzf587V8mbCAgKcbTmvmmXpKqPve1N4JoOoHsu8cqM2ySLEu1OG6hKrfpSDxoEQ==
 
-"@medux/react-web-router@~0.2.6":
+"@medux/react-web-router@^0.2.6":
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/@medux/react-web-router/-/react-web-router-0.2.6.tgz#4661b44f110c577ca92ba7d00b067415f9812f88"
   integrity sha512-qw8yka4lXPUB0DFqMMJWRu1qOyramoJ5bPm27pIY+UNk1WsGDMAQXfP+o7OkHRB/ED3+TfA7JfaBwH0E07lezQ==

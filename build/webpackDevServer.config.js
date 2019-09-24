@@ -10,7 +10,7 @@ function replaceTpl(req, html) {
 }
 
 const config = {
-  contentBase: [pathsConfig.publicPath, pathsConfig.envPublicPath],
+  contentBase: [pathsConfig.envPublicPath, pathsConfig.publicPath],
   watchContentBase: true,
   publicPath: '/',
   compress: true,

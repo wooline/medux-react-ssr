@@ -1,7 +1,7 @@
 // 将某些常用变量提升至global，对全局变量有洁癖者可忽略此文件
 import './Prepose';
 
-import {actions, historyActions, loadView, moduleNames, toUrl, viewNames} from './modules';
+import {actions, historyActions, moduleNames, toUrl, viewNames} from './modules';
 import {isServer, message, metaKeys} from './common/utils';
 
 type HistoryActions = typeof historyActions;
@@ -10,13 +10,13 @@ type Actions = typeof actions;
 type MetaKeys = typeof metaKeys;
 type EnumViewNames = typeof viewNames;
 type EnumModuleNames = typeof moduleNames;
-type LoadView = typeof loadView;
 type Message = typeof message;
 
 declare global {
   type ModuleNames = EnumModuleNames;
   type ViewNames = EnumViewNames;
   type RootState = import('./modules').RootState;
+  type LoadView = import('./modules').LoadView;
   type RouteData = RootState['route']['data'];
   type BaseRouteData = import('@medux/react-web-router').RouteData;
   type CommonErrorCode = import('./entity/common').CommonErrorCode;

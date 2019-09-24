@@ -2,13 +2,9 @@ import {CurUser} from 'entity/common';
 import request from 'common/request';
 export class API {
   public getCurUser(): Promise<CurUser> {
-    return request<CurUser>('post', '/ajax/v1/user/UserSession')
-      .then(res => {
-        return {username: res.username, hasLogin: true};
-      })
-      .catch(() => {
-        return {username: 'guest', hasLogin: false};
-      });
+    return request<CurUser>('get', '/ajax/session').catch(() => {
+      return {username: 'guest', hasLogin: false};
+    });
   }
   public login(req: {username: string; password: string}): Promise<CurUser> {
     return request<{sessionid: string}>('post', '/ajax/v1/user/Login', {}, req).then(res => {

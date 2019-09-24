@@ -1,4 +1,4 @@
-import {loadView as BaseLoadView, RootState as BaseState, LoadView, RouteConfig, exportActions, getBrowserHistory, setRouteConfig} from '@medux/react-web-router';
+import {LoadView as BaseLoadView, RootState as BaseState, RouteConfig, exportActions, getBrowserHistory, setRouteConfig} from '@medux/react-web-router';
 
 export enum moduleNames {
   app = 'app',
@@ -26,7 +26,7 @@ export const actions = exportActions(moduleGetter);
 
 export type RootState = BaseState<typeof moduleGetter>;
 
-export const loadView: LoadView<typeof moduleGetter> = BaseLoadView;
+export type LoadView = BaseLoadView<typeof moduleGetter, React.ComponentType<any>>;
 
 export const {historyActions, toUrl} = getBrowserHistory<RootState['route']['data']['params']>();
 

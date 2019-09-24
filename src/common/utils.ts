@@ -18,6 +18,8 @@ let inited = false;
 export function setInited(store: Store) {
   inited = true;
   store.dispatch({type: 'app/ClientInited'});
+  const initLoading = document.getElementById('g-init-loading');
+  initLoading && initLoading.parentNode!.removeChild(initLoading);
 }
 export function getInited() {
   return inited;
@@ -91,8 +93,9 @@ export function getFormDecorators<D>(form: WrappedFormUtils, fields: {[key in ke
   return decorators as {[K in Keys]: (node: React.ReactNode) => React.ReactNode};
 }
 export const metaKeys = {
-  HomePathname: '/',
+  HomePathname: '/poster/home',
   LoginPathname: '/login',
+  RegisterPathname: '/register',
   UserHomePathname: '/user',
   SessionIDSessionStorageKey: 'SessionID',
   LoginRedirectSessionStorageKey: 'LoginRedirectTo',

@@ -16,13 +16,14 @@ import zhCN from 'antd/es/locale/zh_CN';
 
 moment.locale('zh-cn');
 
+const PosterLayout = loadView('posterLayout', 'Main');
+
 interface StateProps {
   showLoginPop: boolean;
   showRegisterPop: boolean;
   showNotFoundPop: boolean;
 }
-// <Redirect exact path="/poster" to="/poster/home" />
-// <Redirect exact path="/user" to="/user/home" />
+//
 class Component extends React.PureComponent<StateProps & DispatchProp> {
   private onCloseLoginPop = () => {
     this.props.dispatch(actions.app.putShowLoginPop(false));
@@ -37,6 +38,9 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
         <>
           <Switch>
             <Redirect exact path="/" to="/poster/home" />
+            <Redirect exact path="/poster" to="/poster/home" />
+            <Redirect exact path="/user" to="/user/home" />
+            <Route path="/poster" component={PosterLayout} />
             <Route component={NotFound} />
           </Switch>
           <Modal visible={showLoginPop} onCancel={this.onCloseLoginPop} title="请登录" closable={true}>
