@@ -9,8 +9,7 @@
     "lint": "npm run eslint && npm run stylelint && npm run types-check",
     "start": "npm run lint && cross-env NODE_ENV=development SITE=local node build/start.js",
     "build": "npm run lint && cross-env NODE_ENV=production SITE=local node build/build.js",
-    "site": "npm run lint && cross-env WEBSITE=site node build/build.js",
-    "build-demo": "node build/ssr-demo.js && npm run build && node build/express-demo.js"
+    "prod": "npm run lint && cross-env NODE_ENV=production node build/build.js"
   },
   "repository": "https://github.com/wooline/medux-demo-ssr",
   "homepage": "https://github.com/wooline/medux-demo-ssr",
