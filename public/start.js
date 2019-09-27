@@ -11,7 +11,13 @@ const app = express();
 const [, , port] = server.split(/:\/*/);
 
 function replaceTpl(req, html) {
-  return html;
+  return html.replace(/%\w+%/gm, flag => {
+    const wd = flag.substr(1, flag.length - 2);
+    if (wd === 'title') {
+      return initEnv.pageNames[req.url.split('?')[0]] || 'SSR Demo';
+    }
+    return '';
+  });
 }
 
 app.use('/client', express.static('./client', {fallthrough: false}));

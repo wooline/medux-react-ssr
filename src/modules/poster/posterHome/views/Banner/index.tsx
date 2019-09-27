@@ -4,9 +4,9 @@ import {Icon} from 'antd';
 import {Link} from 'react-router-dom';
 import React from 'react';
 
-interface StateProps {}
+interface StoreProps {}
 
-class Component extends React.PureComponent<StateProps> {
+class Component extends React.PureComponent<StoreProps> {
   public render() {
     return (
       <div className="posterHome-Banner g-banner">

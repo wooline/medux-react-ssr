@@ -9,7 +9,6 @@ import LoginPop from '../LoginPop';
 import {Modal} from 'antd';
 import NotFound from 'components/NotFound';
 import React from 'react';
-import Startup from '../Startup';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -18,13 +17,13 @@ moment.locale('zh-cn');
 
 const PosterLayout = loadView('posterLayout', 'Main');
 
-interface StateProps {
+interface StoreProps {
   showLoginPop: boolean;
   showRegisterPop: boolean;
   showNotFoundPop: boolean;
 }
 //
-class Component extends React.PureComponent<StateProps & DispatchProp> {
+class Component extends React.PureComponent<StoreProps & DispatchProp> {
   private onCloseLoginPop = () => {
     this.props.dispatch(actions.app.putShowLoginPop(false));
   };
@@ -37,9 +36,9 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
       <ConfigProvider locale={zhCN}>
         <>
           <Switch>
-            <Redirect exact path="/" to="/poster/home" />
-            <Redirect exact path="/poster" to="/poster/home" />
-            <Redirect exact path="/user" to="/user/home" />
+            <Redirect exact path="/" to={metaKeys.HomePathname} />
+            <Redirect exact path="/poster" to={metaKeys.HomePathname} />
+            <Redirect exact path="/user" to={metaKeys.UserHomePathname} />
             <Route path="/poster" component={PosterLayout} />
             <Route component={NotFound} />
           </Switch>
@@ -50,14 +49,13 @@ class Component extends React.PureComponent<StateProps & DispatchProp> {
             <NotFound />
           </Modal>
           <GlobalLoading />
-          <Startup />
         </>
       </ConfigProvider>
     );
   }
 }
 
-const mapStateToProps: (state: RootState) => StateProps = state => {
+const mapStateToProps: (state: RootState) => StoreProps = state => {
   const app = state.app!;
   return {
     showLoginPop: !!app.showLoginPop,

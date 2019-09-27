@@ -25,10 +25,10 @@ export const initModelState: State = {
 
 // 定义本模块的Handlers
 export class ModelHandlers extends BaseModelHandlers<State, RootState> {
-  @reducer
-  public putStartup(startupStep: StartupStep): State {
-    return {...this.state, startupStep};
-  }
+  // @reducer
+  // public putStartup(startupStep: StartupStep): State {
+  //   return {...this.state, startupStep};
+  // }
   @reducer
   public putCurUser(curUser: CurUser): State {
     return {...this.state, curUser};
@@ -63,7 +63,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   protected async [ActionTypes.Error](error: CustomError) {
     if (error.code === '401') {
       const location = this.rootState.route.location;
-      sessionStorage.setItem(metaKeys.LoginRedirectSessionStorageKey, location.pathname + location.search + location.hash);
+      sessionStorage.setItem(metaKeys.LoginRedirectSessionStorageKey, location.pathname + location.search);
       historyActions.replace(metaKeys.LoginPathname);
     } else {
       console.error(error);

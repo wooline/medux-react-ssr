@@ -96,8 +96,9 @@ export const metaKeys = {
   HomePathname: '/poster/home',
   LoginPathname: '/login',
   RegisterPathname: '/register',
-  UserHomePathname: '/user',
-  SessionIDSessionStorageKey: 'SessionID',
-  LoginRedirectSessionStorageKey: 'LoginRedirectTo',
+  UserHomePathname: '/user/home',
   ClientInitedAction: 'app/ClientInited',
+  LoginRedirectSessionStorageKey: 'LoginRedirectTo',
+  AnchorParamKey: 'anchor',
+  SessionIDSessionStorageKey: 'SessionID',
 };

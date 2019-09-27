@@ -987,17 +987,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@medux/core@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@medux/core/-/core-0.2.6.tgz#be7e27826c54d2f1d86bb50bf5d0d1eb67d3ce78"
-  integrity sha512-N10aw4po6EN/UaL+HiIJyCaTPqEGQbVgsUqM3/i00qCbSITR4ub5NvNRIG9lCFAQnNyFprbGLhbFEr42zBVwEg==
+"@medux/core@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@medux/core/-/core-0.2.8.tgz#a6d4fbfd44c2e2faee8fc58995fc170116654a8a"
+  integrity sha512-jZBcu0IhTLacYyoomoSe/1uO5B5jRKsLBuiI+GJmyM4ijj9cHscIeUWaSLgaUKhRa6zWAHwDVKkN9H+S11LbWw==
   dependencies:
     redux "~4.0.1"
 
-"@medux/dev-pkg@~0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@medux/dev-pkg/-/dev-pkg-0.2.5.tgz#eabc1262803b9f65cd5ba57ae639d732b3bbc29a"
-  integrity sha512-N98Okk2PPWx9/MyPZD9j6lxTh91CHq3tzZTVUexyh5Iqe5l2asEaBLRM/FUue95gGmHkEXDtidwriQH9kV0ptQ==
+"@medux/dev-pkg@~0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@medux/dev-pkg/-/dev-pkg-0.2.8.tgz#f2494c34b0cf670ba8a22cb3e017d957b0b3890a"
+  integrity sha512-xHD1zwe7GjYpY9QGX85YY+hs1hMObN2ENx+GAiSrZ5RXGhIBs6GXZ/xBrvKoIJR+d3pcaWAgzfvPsB4Yo+Q+6Q==
   dependencies:
     "@babel/core" "~7.4.5"
     "@babel/plugin-proposal-class-properties" "~7.4.4"
@@ -1054,46 +1054,46 @@
     webpack-manifest-plugin "~2.0.4"
     yargs "~13.2.4"
 
-"@medux/dev-utils@~0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@medux/dev-utils/-/dev-utils-0.2.7.tgz#c81ec1027b1fbe513f63487916c690827e768713"
-  integrity sha512-aKCduat9MjtJlPJFGtqskQlRzf587V8mbCAgKcbTmvmmXpKqPve1N4JoOoHsu8cqM2ySLEu1OG6hKrfpSDxoEQ==
+"@medux/dev-utils@~0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@medux/dev-utils/-/dev-utils-0.2.8.tgz#eb226a958bf337045b9be4a2102114f55215b95d"
+  integrity sha512-6w3A6yVrU2OZMZfZ2LBNwpCTH6eBvFjPoYCegeHPSQDHrsSgBqGNUsPC5V4qtZHVNw0sLohLc0txUtZxjoQXkQ==
 
-"@medux/react-web-router@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@medux/react-web-router/-/react-web-router-0.2.6.tgz#4661b44f110c577ca92ba7d00b067415f9812f88"
-  integrity sha512-qw8yka4lXPUB0DFqMMJWRu1qOyramoJ5bPm27pIY+UNk1WsGDMAQXfP+o7OkHRB/ED3+TfA7JfaBwH0E07lezQ==
+"@medux/react-web-router@~0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@medux/react-web-router/-/react-web-router-0.2.8.tgz#928e5e03c2f2ef41e91039a92caf669de18c86ae"
+  integrity sha512-BW+XiBc5cpi9mhrb4+BTvXHD5fScgItQQdZ9k+fBfK4ZY11/yOB5UD61M1nRPr97MrzeHnEg79NaJeIDPRx1sQ==
   dependencies:
-    "@medux/react" "^0.2.6"
-    "@medux/route-plan-a" "^0.2.6"
-    "@medux/web" "^0.2.6"
+    "@medux/react" "^0.2.8"
+    "@medux/route-plan-a" "^0.2.8"
+    "@medux/web" "^0.2.8"
     "@types/react-router-dom" "~4.3.4"
     react-router-dom "~5.0.1"
 
-"@medux/react@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@medux/react/-/react-0.2.6.tgz#57a0fba170b3e4c676dd1b5c5340b2d0e9c787a3"
-  integrity sha512-QzuQFNscJKt6U7CCEcNaRZKQwzpOVS//2EOYIEPxfFv2upRo7FuUp2wppn5xtKijDTa3maR5CHf1+5dEbU55NQ==
+"@medux/react@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@medux/react/-/react-0.2.8.tgz#8f6b845d10b2fb5f4972dccf60eab7711e9d8ff6"
+  integrity sha512-tTXa8PuYjdhwG1E18IJqje/fdAkEJSg6Wb+JDhhXqkp3B7jyZkOJIi28tsXjEgZiSIVc5GKhkBueST+JPvabzA==
   dependencies:
-    "@medux/core" "^0.2.6"
+    "@medux/core" "^0.2.8"
     "@types/react-redux" "~7.1.1"
     react-redux "~7.1.0"
 
-"@medux/route-plan-a@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@medux/route-plan-a/-/route-plan-a-0.2.6.tgz#3f046c4946c38e7f3d90c81385edc0c4f5f0df9a"
-  integrity sha512-QFxDYAH0QFa48VBqURcyfv6XIw+sarxExMLXCHyYmX9WDC9DxL8CUIXPTdkAC42P2ZjX9ueIh9gIixloAcH0UQ==
+"@medux/route-plan-a@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@medux/route-plan-a/-/route-plan-a-0.2.8.tgz#a6a44d29de9d2e0c930c4ca694fc0c35c881c4bb"
+  integrity sha512-dRfu1D7/FjUW7BtcXXNGUkKlPtSBw/yivM8n6my2D9eJKuwfQbo5Y55fRloQvJsxfRUlsYB1w5p2Ao98Fa1wcA==
   dependencies:
-    "@medux/web" "^0.2.6"
+    "@medux/web" "^0.2.8"
     deep-extend "^0.6.0"
     path-to-regexp "^3.0.0"
 
-"@medux/web@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@medux/web/-/web-0.2.6.tgz#c834efc3948b5d6a55f9a2b69051c3476cf970c4"
-  integrity sha512-BmkyT6LOzP/osFNv3G4O8Qqru8/ACd04WCQArmPEwKLneBvkuePoiPoyEatpdGazKdh1aGuTRzoz2v26yMlaTg==
+"@medux/web@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@medux/web/-/web-0.2.8.tgz#da5fa088080d760f72d0a400bc4a4aa604166772"
+  integrity sha512-mqnR2Lj27srbHtPrZOhsPUU9kzzHssFCtgAWae5NgeQt6rHjPOM32uRqouxkCc1Qv+h5GludbbRfqVEuTjm9cA==
   dependencies:
-    "@medux/core" "^0.2.6"
+    "@medux/core" "^0.2.8"
     "@types/history" "~4.7.2"
     history "~4.9.0"
 

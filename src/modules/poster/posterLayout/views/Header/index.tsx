@@ -8,11 +8,11 @@ import {Link} from 'react-router-dom';
 import React from 'react';
 import {connect} from 'react-redux';
 
-interface StateProps {
+interface StoreProps {
   curUser?: CurUser;
 }
 
-class Component extends React.PureComponent<StateProps & DispatchProp & RouteComponentProps> {
+class Component extends React.PureComponent<StoreProps & DispatchProp & RouteComponentProps> {
   public render() {
     const {curUser} = this.props;
     return (
@@ -55,7 +55,7 @@ class Component extends React.PureComponent<StateProps & DispatchProp & RouteCom
   }
 }
 
-const mapStateToProps: (state: RootState) => StateProps = state => {
+const mapStateToProps: (state: RootState) => StoreProps = state => {
   const app = state.app!;
   return {
     curUser: app.curUser,

@@ -25,6 +25,7 @@ declare global {
   //初始环境变量放在index.html中, 以防止被 webpack 打包
   const initEnv: {
     siteName: string;
+    pageNames: {[pathname: string]: string};
     version: string;
     clientPublicPath: string;
     apiServerPath: {[key: string]: string};

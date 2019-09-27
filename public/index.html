@@ -11,9 +11,14 @@
       html,
       body,
       #root {
+        font-family: Microsoft Yahei, Simsun, STXihei, serif;
         margin: 0;
         padding: 0;
         height: 100%;
+      }
+      body {
+        position: relative;
+        min-width: 1400px;
       }
       @keyframes g-init-loading-ball {
         0% {
@@ -88,6 +93,18 @@
     </script>
     <script type="text/javascript">
       (function() {
+        var href = location.pathname + location.search;
+        var hash = location.hash.replace('#', '');
+        //兼容IE9的hash路由
+        if (hash) {
+          if (hash !== href) {
+            location.href = history.pushState ? hash : hash + '#' + hash;
+          }
+        } else {
+          if (!history.pushState) {
+            location.href = href + '#' + href;
+          }
+        }
         window.initEnv = $$ClientGlobal$$;
       })();
     </script>

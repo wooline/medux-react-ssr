@@ -7,10 +7,10 @@ import {buildSSR} from '@medux/react-web-router';
 
 export default function render(path: string) {
   if (path === '/' || path === '/poster') {
-    throw new RedirectError('/poster/home');
+    throw new RedirectError(metaKeys.HomePathname);
   }
   if (path === '/user') {
-    throw new RedirectError('/user/home');
+    throw new RedirectError(metaKeys.UserHomePathname);
   }
   return buildSSR(moduleGetter, 'app', path, routeConfig);
 }

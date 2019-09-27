@@ -1,5 +1,6 @@
 import {Route, Switch} from 'react-router-dom';
 
+import Contact from '../Contact';
 import Footer from '../Footer';
 import Header from '../Header';
 import NotFound from 'components/NotFound';
@@ -8,13 +9,12 @@ import {connect} from 'react-redux';
 
 const posterHome = loadView('posterHome', 'Main');
 
-interface StateProps {
+interface StoreProps {
   pathname: string;
 }
 
-class Component extends React.PureComponent<StateProps> {
+class Component extends React.PureComponent<StoreProps> {
   public render() {
-    const {pathname} = this.props;
     return (
       <div className="posterLayout-Main">
         <Header />
@@ -22,7 +22,8 @@ class Component extends React.PureComponent<StateProps> {
           <Route path="/poster/home" component={posterHome} />
           <Route component={NotFound} />
         </Switch>
-        {pathname !== '/poster/latest-active' && <Footer />}
+        <Contact />
+        <Footer />
       </div>
     );
   }
