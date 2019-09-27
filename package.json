@@ -27,7 +27,6 @@
     "siteName": "Medux",
     "clientPublicPath": "/",
     "server": "http://localhost:7445",
-    "apiServer": "http://localhost:7446",
     "mock": true,
     "ssr": true,
     "proxy": {
