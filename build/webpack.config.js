@@ -50,19 +50,22 @@ const clientConfig = {
           cacheGroups: {
             styles: {
               name: 'styles',
-              test: /\.(css|less)$/,
+              test: /[\\/]node_modules[\\/].+\.(css|less)$/,
+              chunks: 'all',
+              enforce: true,
+            },
+            css: {
+              name: 'css',
+              test: /[\\/]src[\\/].+\.(css|less)$/,
               chunks: 'all',
               enforce: true,
             },
           },
         },
-        runtimeChunk: 'single',
         minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
         // minimize: true,
       }
-    : {
-        runtimeChunk: 'single',
-      },
+    : {},
   stats: {chunkModules: false},
   performance: false,
   module: {
@@ -144,8 +147,8 @@ const clientConfig = {
     // new webpack.DefinePlugin({
     //   'process.env': JSON.stringify(webConf),
     // }),
+    new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
-      chunks: ['runtime', 'main', 'styles'],
       template: path.join(pathsConfig.publicPath, './index.html'),
       title: clientGlobal.siteName,
     }),
@@ -153,11 +156,9 @@ const clientConfig = {
     prodModel &&
       new MiniCssExtractPlugin({
         filename: `client/css/${fileName}.css`,
-        chunkFilename: `client/css/${fileName}.chunk.css`,
       }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     !prodModel && new webpack.HotModuleReplacementPlugin(),
-    new webpack.ProgressPlugin(),
   ].filter(Boolean),
 };
 
@@ -189,7 +190,6 @@ const serverConfig = {
     runtimeChunk: false,
     splitChunks: {
       cacheGroups: {
-        default: false,
         vendors: false,
       },
     },
@@ -220,7 +220,7 @@ const serverConfig = {
       },
     ],
   },
-  plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), new webpack.ProgressPlugin()],
+  plugins: [new webpack.ProgressPlugin(), new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
 };
 
 module.exports = [clientConfig, serverConfig];

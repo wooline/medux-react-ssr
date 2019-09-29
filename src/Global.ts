@@ -38,7 +38,6 @@ declare global {
   const historyActions: HistoryActions;
   const toUrl: ToUrl;
   const global: any;
-  const require: any;
 }
 
 ((data: {[key: string]: any}) => {

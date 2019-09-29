@@ -21,7 +21,7 @@ function replaceTpl(req, html) {
 }
 
 app.use('/client', express.static('./client', {fallthrough: false}));
-app.use(ssrServer(htmlTpl, mainModule, proxy, replaceTpl));
 app.use(devMock(mock, proxy, true));
 app.use('/ajax', proxyMiddleware(proxy['/ajax/**']));
+app.use(ssrServer(htmlTpl, mainModule, proxy, replaceTpl));
 app.listen(port, () => console.info(chalk`.....${new Date().toLocaleString()} starting {red SSR Server} on {green ${server}/} \n`));
