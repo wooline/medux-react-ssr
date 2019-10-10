@@ -1,5 +1,3 @@
-import './index.less';
-
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 
 import {CurUser} from 'entity/common';
@@ -7,6 +5,7 @@ import {Icon} from 'antd';
 import {Link} from 'react-router-dom';
 import React from 'react';
 import {connect} from 'react-redux';
+import style from './index.m.less';
 
 interface StoreProps {
   curUser?: CurUser;
@@ -16,11 +15,11 @@ class Component extends React.PureComponent<StoreProps & DispatchProp & RouteCom
   public render() {
     const {curUser} = this.props;
     return (
-      <header className="posterLayout-Header">
+      <header className={style.root}>
         <div className="g-doc g-clearfix">
           <div className="main">
             <Link to={metaKeys.HomePathname} className="logo g-clearfix">
-              <img height="35" src={`${initEnv.clientPublicPath}client/imgs/logo.svg`} alt={initEnv.siteName} />
+              <img height="35" src={`${initEnv.staticPath}imgs/logo.svg`} alt={initEnv.siteName} />
               <h2>Medux SSR Demo</h2>
             </Link>
             <nav>

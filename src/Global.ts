@@ -27,7 +27,7 @@ declare global {
     siteName: string;
     pageNames: {[pathname: string]: string};
     version: string;
-    clientPublicPath: string;
+    staticPath: string;
     apiServerPath: {[key: string]: string};
   };
   const loadView: LoadView;

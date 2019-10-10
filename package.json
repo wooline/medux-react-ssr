@@ -51,10 +51,11 @@
   },
   "devDependencies": {
     "@medux/dev-pkg": "~0.2.8",
-    "@medux/dev-utils": "~0.2.8",
+    "@medux/dev-utils": "~0.2.9",
     "@types/react": "^16.8.9",
     "@types/react-dom": "^16.8.9",
     "babel-plugin-import": "~1.12.0",
+    "sass-resources-loader": "~2.0.1",
     "less": "~3.10.3",
     "less-loader": "~5.0.0",
     "typescript": "~3.5.3"

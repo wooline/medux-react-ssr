@@ -7,8 +7,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const pathsConfig = require('./path.conifg');
 const prodModel = process.env.NODE_ENV == 'production';
-const {clientGlobal, serverGlobal} = require(path.join(pathsConfig.envPath, './env'));
-const clientPublicPath = clientGlobal.clientPublicPath;
+const {clientGlobal, serverGlobal, clientPublicPath} = require(path.join(pathsConfig.envPath, './env'));
+
 const fileName = '[name].[hash:8]';
 const htmlReplace = [
   {
@@ -23,7 +23,60 @@ const htmlReplace = [
     pattern: '$$ClientPublicPath$$',
     replacement: clientPublicPath,
   },
+  {
+    pattern: '$$Title$$',
+    replacement: clientGlobal.siteName,
+  },
 ];
+
+const getLocalIdent = (context, localIdentName, localName) => {
+  let fileName = context.resourcePath;
+  if (fileName.match(/[/\\]global.\w+?$/)) {
+    return 'g-' + localName;
+  }
+  fileName = fileName
+    .replace(pathsConfig.srcPath, '')
+    .replace(/\W/g, '-')
+    .replace(/^-|-index-m-\w+$|-m-\w+$/g, '')
+    .replace(/^components-/, 'comp-')
+    .replace(/^modules-.*?(\w+)-views(-?)(.*)/, '$1$2$3');
+  return localName === 'root' ? fileName : fileName + '_' + localName;
+};
+
+const lessLoader = (enableCssModule, ssr) => {
+  return [
+    !ssr &&
+      (prodModel
+        ? {
+            loader: MiniCssExtractPlugin.loader,
+          }
+        : {loader: 'style-loader'}),
+    {
+      loader: 'css-loader',
+      options: {
+        importLoaders: ssr ? 1 : 2,
+        modules: enableCssModule,
+        context: pathsConfig.srcPath,
+        exportOnlyLocals: ssr,
+        getLocalIdent,
+        //localIdentName: '[path][name]_[local]',
+      },
+    },
+    !ssr && 'postcss-loader',
+    {
+      loader: 'less-loader',
+      options: {
+        javascriptEnabled: true,
+      },
+    },
+    {
+      loader: 'sass-resources-loader',
+      options: {
+        resources: [path.join(pathsConfig.srcPath, 'asset/css/vars.less')],
+      },
+    },
+  ].filter(Boolean);
+};
 
 const clientConfig = {
   mode: prodModel ? 'production' : 'development',
@@ -39,7 +92,7 @@ const clientConfig = {
   },
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
-    modules: [pathsConfig.srcPath, 'node_modules'],
+    modules: [...pathsConfig.moduleSearch, 'node_modules'],
     alias: {
       ...pathsConfig.moduleAlias,
     },
@@ -84,27 +137,14 @@ const clientConfig = {
       },
       {
         test: /\.less$/,
+        exclude: /\.m\.less$/,
         include: pathsConfig.moduleSearch,
-        use: [
-          prodModel
-            ? {
-                loader: MiniCssExtractPlugin.loader,
-              }
-            : {loader: 'style-loader'},
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 2,
-            },
-          },
-          'postcss-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              javascriptEnabled: true,
-            },
-          },
-        ],
+        use: lessLoader(false),
+      },
+      {
+        test: /\.m\.less$/,
+        include: pathsConfig.moduleSearch,
+        use: lessLoader(true),
       },
       {
         test: /\.css$/,
@@ -150,7 +190,6 @@ const clientConfig = {
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(pathsConfig.publicPath, './index.html'),
-      title: clientGlobal.siteName,
     }),
     new HtmlReplaceWebpackPlugin(htmlReplace),
     prodModel &&
@@ -209,7 +248,13 @@ const serverConfig = {
       },
       {
         test: /\.(less|css)$/,
+        exclude: /\.m\.less$/,
         loader: 'null-loader',
+      },
+      {
+        test: /\.m\.less$/,
+        include: pathsConfig.moduleSearch,
+        use: lessLoader(true, true),
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/,

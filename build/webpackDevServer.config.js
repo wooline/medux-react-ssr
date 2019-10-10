@@ -36,8 +36,9 @@ const config = {
   },
   proxy,
   before: app => {
-    app.use(devServer(baseConf.ssr, proxy, replaceTpl));
     app.use(devMock(mock, proxy, true));
+    app.use(devServer(baseConf.ssr, replaceTpl));
   },
 };
+
 module.exports = config;

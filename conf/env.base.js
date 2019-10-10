@@ -8,7 +8,7 @@ const clientGlobal = {
     '/user/home': '用户中心',
   },
   version,
-  clientPublicPath,
+  staticPath: clientPublicPath + 'client/',
   apiServerPath: {'/ajax/': '/ajax/'},
 };
 const serverGlobal = {
@@ -21,4 +21,5 @@ module.exports = {
   mock,
   clientGlobal,
   serverGlobal,
+  clientPublicPath,
 };
