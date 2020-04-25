@@ -1,79 +1,133 @@
-import {LoadView as BaseLoadView, RootState as BaseState, RouteConfig, exportActions, getBrowserHistory, setRouteConfig} from '@medux/react-web-router';
+import * as reactWebRouter from '@medux/react-web-router';
+
+import {RouteConfig, exportActions} from '@medux/react-web-router';
+
+import adminMemberParams from 'modules/admin/adminMember/meta';
+import adminPostParams from 'modules/admin/adminPost/meta';
+import adminRoleParams from 'modules/admin/adminRole/meta';
+
+export const defaultRouteParams: {[K in moduleNames]: any} = {
+  app: null,
+  adminLayout: null,
+  adminHome: null,
+  adminRole: adminRoleParams,
+  adminMember: adminMemberParams,
+  adminPost: adminPostParams,
+  articleLayout: null,
+  articleHome: null,
+  articleAbout: null,
+  articleService: null,
+};
 
 export enum moduleNames {
   app = 'app',
-  posterLayout = 'postLayout',
-  posterHome = 'postHome',
+  adminLayout = 'adminLayout',
+  adminHome = 'adminHome',
+  adminRole = 'adminRole',
+  adminMember = 'adminMember',
+  adminPost = 'adminPost',
+  articleLayout = 'articleLayout',
+  articleHome = 'articleHome',
+  articleAbout = 'articleAbout',
+  articleService = 'articleService',
 }
-
-const defaultRouteParams: {[K in moduleNames]?: any} = {};
-setRouteConfig({defaultRouteParams});
 
 // 定义模块的加载方案，同步或者异步均可
 export const moduleGetter = {
   app: () => {
     return import(/* webpackChunkName: "app" */ 'modules/app');
   },
-  posterLayout: () => {
-    return import(/* webpackChunkName: "posterLayout" */ 'modules/poster/posterLayout');
+  adminLayout: () => {
+    return import(/* webpackChunkName: "adminLayout" */ 'modules/admin/adminLayout');
   },
-  posterHome: () => {
-    return import(/* webpackChunkName: "posterHome" */ 'modules/poster/posterHome');
+  adminHome: () => {
+    return import(/* webpackChunkName: "adminHome" */ 'modules/admin/adminHome');
+  },
+  adminRole: () => {
+    return import(/* webpackChunkName: "adminRole" */ 'modules/admin/adminRole');
+  },
+  adminMember: () => {
+    return import(/* webpackChunkName: "adminMember" */ 'modules/admin/adminMember');
+  },
+  adminPost: () => {
+    return import(/* webpackChunkName: "adminPost" */ 'modules/admin/adminPost');
+  },
+  articleLayout: () => {
+    return import(/* webpackChunkName: "articleLayout" */ 'modules/article/articleLayout');
+  },
+  articleHome: () => {
+    return import(/* webpackChunkName: "articleHome" */ 'modules/article/articleHome');
+  },
+  articleAbout: () => {
+    return import(/* webpackChunkName: "articleAbout" */ 'modules/article/articleAbout');
+  },
+  articleService: () => {
+    return import(/* webpackChunkName: "articleService" */ 'modules/article/articleService');
   },
 };
-
 export const actions = exportActions(moduleGetter);
 
-export type RootState = BaseState<typeof moduleGetter>;
+export type RootState = reactWebRouter.RootState<typeof moduleGetter>;
 
-export type LoadView = BaseLoadView<typeof moduleGetter, React.ComponentType<any>>;
+export type RouteViews = reactWebRouter.RouteViews<typeof moduleGetter>;
 
-export const {historyActions, toUrl} = getBrowserHistory<RootState['route']['data']['params']>();
+export type LoadView = reactWebRouter.LoadView<typeof moduleGetter>;
 
-export enum viewNames {
-  appMain = 'app.Main',
-}
+export type BrowserRouter = reactWebRouter.BrowserRouter<RootState['route']['data']['params']>;
 
 export const routeConfig: RouteConfig = {
+  '/$': '@./admin/home',
   '/': [
     'app.Main',
     {
-      '/login': 'app.Login',
-      '/register': 'app.Register',
-      '/user': [
-        'userLayout.Main',
+      '/login': 'app.LoginPage',
+      '/register': 'app.RegisterPage',
+      '/admin$': '@./admin/home',
+      '/admin': [
+        'adminLayout.Main',
         {
-          '/user/requirements': 'requirements.Main',
+          '/admin/home': 'adminHome.Main',
+          '/admin/role/:listView': [
+            'adminRole.List',
+            {
+              '/admin/role/:listView/:itemView/:itemId': 'adminRole.Detail',
+            },
+          ],
+          '/admin/member/:listView': [
+            'adminMember.List',
+            {
+              '/admin/member/:listView/:itemView/:itemId': 'adminMember.Detail',
+            },
+          ],
+          '/admin/post/:listView': [
+            'adminPost.List',
+            {
+              '/admin/post/:listView/:itemView/:itemId': 'adminPost.Detail',
+            },
+          ],
         },
       ],
-      '/poster': [
-        'posterLayout.Main',
+      '/article$': '@./article/home',
+      '/article': [
+        'articleLayout.Main',
         {
-          '/poster/home': 'posterHome.Main',
-          '/poster/voiceprint_1n': 'voiceprint_1n.Main',
-          '/poster/voiceprint_11': 'voiceprint_11.Main',
-          '/poster/voiceprint_nn': 'voiceprint_nn.Main',
-          '/poster/voiceprint_clustering': 'voiceprint_clustering.Main',
-          '/poster/expansion_cleaning': 'expansion_cleaning.Main',
-          '/poster/expansion_emotion': 'expansion_emotion.Main',
-          '/poster/expansion_humanlike': 'expansion_humanlike.Main',
-          '/poster/expansion_separation': 'expansion_separation.Main',
-          '/poster/expansion_sex': 'expansion_sex.Main',
-          '/poster/biometric_asr': 'biometric_asr.Main',
-          '/poster/biometric_lip': 'biometric_lip.Main',
-          '/poster/biometric_face': 'biometric_face.Main',
-          '/poster/biometric_voice': 'biometric_voice.Main',
-          '/poster/aap': 'aap.Main',
-          '/poster/aat': 'aat.Main',
-          '/poster/asrtran': 'asrtran.Main',
-          '/poster/nlpanalyze': 'nlpanalyze.Main',
-          '/poster/tts': 'tts.Main',
-          '/poster/cooperationCase': 'cooperationCase.Main',
-          '/poster/ai_open': 'ai_open.Main',
-          '/poster/oneStopCustom': 'oneStopCustom.Main',
-          '/poster/openEco': 'openEco.Main',
+          '/article/home': 'articleHome.Main',
+          '/article/about': 'articleAbout.Main',
+          '/article/service': 'articleService.Main',
         },
       ],
     },
   ],
+};
+export const pageNames = {
+  '/': 'Demo',
+  '/login': '登录',
+  '/register': '注册',
+  '/article/home': '帮助中心',
+  '/article/service': '用户服务',
+  '/article/about': '关于我们',
+  '/admin/home': '管理中心',
+  '/admin/role/list': '角色列表',
+  '/admin/member/list': '用户列表',
+  '/admin/post/list': '信息列表',
 };

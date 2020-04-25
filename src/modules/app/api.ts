@@ -1,20 +1,33 @@
-import {CurUser} from 'entity/common';
-import request from 'common/request';
+import {CurUser, LoginRequest, Notices, RegisterRequest, guest} from 'entity/session';
+
+import {ProjectConfig} from 'entity';
+import ajax from 'common/request';
+
+function setCookie(name: string, value: string, expiredays: number) {
+  const exdate = new Date();
+  exdate.setDate(exdate.getDate() + expiredays);
+  document.cookie = name + '=' + escape(value) + ';expires=' + exdate.toUTCString() + ';path=/';
+}
 export class API {
   public getCurUser(): Promise<CurUser> {
-    return request<CurUser>('get', '/ajax/session').catch(() => {
-      return {username: 'guest', hasLogin: false};
+    return ajax<CurUser>('get', '/api/session').catch((err) => {
+      return guest;
     });
   }
-  public login(req: {username: string; password: string}): Promise<CurUser> {
-    return request<{sessionid: string}>('post', '/ajax/v1/user/Login', {}, req).then(res => {
-      sessionStorage.setItem(metaKeys.SessionIDSessionStorageKey, res.sessionid);
-      return {username: req.username, hasLogin: true};
-    });
+  public login(req: LoginRequest): Promise<CurUser> {
+    return ajax('post', '/api/session', {}, req);
   }
-  public logout(): Promise<CurUser> {
-    sessionStorage.removeItem(metaKeys.SessionIDSessionStorageKey);
-    return Promise.resolve({username: 'guest', hasLogin: false});
+  public register(req: RegisterRequest): Promise<void> {
+    return ajax('post', '/api/member', {}, req);
+  }
+  public logout(): Promise<void> {
+    return ajax('delete', '/api/session');
+  }
+  public getNotices(): Promise<Notices> {
+    return ajax('get', '/api/notices');
+  }
+  public getProjectConfig(): Promise<ProjectConfig> {
+    return ajax('get', '/api/projectConfig');
   }
 }
 

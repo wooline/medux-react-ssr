@@ -4,7 +4,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "target": "esnext",
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "declaration": false,
     "isolatedModules": true,
@@ -15,12 +15,12 @@
     "strict": true,
     "newLine": "LF",
     "lib": ["es2017", "dom"],
-    "types": ["./typings/images"],
+    "types": ["./typings/assets"],
     "removeComments": true,
     "jsx": "react",
     "resolveJsonModule": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "importHelpers": true,
     "forceConsistentCasingInFileNames": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -29,5 +29,5 @@
     "esModuleInterop": true
   },
   "include": ["src"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/com"]
 }
