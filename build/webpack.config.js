@@ -10,10 +10,10 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const {vendors} = require('../package.json');
 const pathsConfig = require('./path.conifg');
+const {vendors} = require(path.join(pathsConfig.rootPath, './package.json'));
 const {env, prodModel} = pathsConfig;
-const {clientGlobal, clientPublicPath} = require(path.join(pathsConfig.envPath, './env'));
+const {clientGlobal, serverGlobal, clientPublicPath} = require(path.join(pathsConfig.envPath, './env'));
 const lessVars = require(path.join(pathsConfig.srcPath, 'assets/css/antd-vars.js'));
 const fileName = '[name].[hash:8]';
 
@@ -25,8 +25,16 @@ const htmlReplace = [
     replacement: JSON.stringify(clientGlobal),
   },
   {
+    pattern: '$$ServerGlobal$$',
+    replacement: JSON.stringify(serverGlobal),
+  },
+  {
     pattern: '$$ClientPublicPath$$',
     replacement: clientPublicPath,
+  },
+  {
+    pattern: '$$Title$$',
+    replacement: clientGlobal.siteName,
   },
 ];
 const generateScopedName = (localName, fileName) => {
@@ -46,17 +54,19 @@ const getLocalIdent = (context, localIdentName, localName) => {
   return generateScopedName(localName, context.resourcePath);
 };
 
-const cssLoader = (enableCssModule) => {
+const cssLoader = (enableCssModule, ssr) => {
   return [
-    prodModel
-      ? {
-          loader: MiniCssExtractPlugin.loader,
-        }
-      : {loader: 'style-loader'},
+    !ssr &&
+      (prodModel
+        ? {
+            loader: MiniCssExtractPlugin.loader,
+          }
+        : {loader: 'style-loader'}),
     {
       loader: 'css-loader',
       options: {
-        importLoaders: 2,
+        importLoaders: ssr ? 1 : 2,
+        onlyLocals: ssr,
         modules: enableCssModule
           ? {
               //localIdentName: '[path][name]_[local]',
@@ -66,7 +76,7 @@ const cssLoader = (enableCssModule) => {
           : false,
       },
     },
-    'postcss-loader',
+    !ssr && 'postcss-loader',
     {
       loader: 'less-loader',
       options: {
@@ -80,13 +90,14 @@ const cssLoader = (enableCssModule) => {
         resources: [path.join(pathsConfig.srcPath, 'assets/css/vars.less')],
       },
     },
-  ];
+  ].filter(Boolean);
 };
 
 const clientConfig = {
+  name: 'client',
   mode: prodModel ? 'production' : 'development',
   devtool: prodModel ? 'cheap-module-source-map' : 'cheap-module-eval-source-map',
-  entry: [path.join(pathsConfig.srcPath, './index')],
+  entry: [path.join(pathsConfig.srcPath, './client')],
   output: {
     path: pathsConfig.distPath,
     filename: `client/js/${fileName}.js`,
@@ -147,13 +158,14 @@ const clientConfig = {
         include: pathsConfig.moduleSearch,
         use: [
           {loader: require.resolve('@medux/dev-utils/dist/webpack-loader/module-hot-loader')},
-          {loader: 'babel-loader', options: {cacheDirectory: true}},
+          {loader: 'babel-loader', options: {cacheDirectory: true, caller: {runtime: 'client'}}},
           {loader: 'eslint-loader', options: {cache: true}},
         ],
       },
       {
         test: /\.less$/,
         exclude: /\.m\.less$/,
+        //include: pathsConfig.moduleSearch,
         use: cssLoader(false),
       },
       {
@@ -197,9 +209,10 @@ const clientConfig = {
   },
   plugins: [
     // new webpack.DefinePlugin({
-    //   'process.env': JSON.stringify(webConf),
+    //   'process.env.RUNTIME_ENV': 'CLIENT',
     // }),
     new HtmlWebpackPlugin({
+      minify: false,
       template: path.join(pathsConfig.publicPath, './index.html'),
       title: clientGlobal.siteName,
     }),
@@ -220,4 +233,82 @@ const clientConfig = {
   ].filter(Boolean),
 };
 
-module.exports = clientConfig;
+const serverConfig = {
+  name: 'server',
+  mode: prodModel ? 'production' : 'development',
+  target: 'node',
+  bail: true,
+  devtool: false,
+  performance: false,
+  entry: [path.join(pathsConfig.srcPath, './server')],
+  output: {
+    libraryTarget: 'commonjs2',
+    path: pathsConfig.distPath,
+    filename: 'server/[name].js',
+    chunkFilename: 'server/[name].chunk.js',
+    publicPath: '/',
+    // Point sourcemap entries to original disk location (format as URL on Windows)
+    devtoolModuleFilenameTemplate: (info) => path.relative(pathsConfig.srcPath, info.absoluteResourcePath).replace(/\\/g, '/'),
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.ts', '.tsx'],
+    modules: [pathsConfig.srcPath, 'node_modules'],
+    alias: {
+      ...pathsConfig.moduleAlias,
+    },
+  },
+  optimization: {
+    minimize: false,
+    runtimeChunk: false,
+    splitChunks: {
+      cacheGroups: {
+        vendors: false,
+      },
+    },
+  },
+  module: {
+    strictExportPresence: true,
+    rules: [
+      {
+        test: /\.(tsx|ts)?$/,
+        include: pathsConfig.moduleSearch,
+        use: [
+          {
+            loader: require.resolve('@medux/dev-utils/dist/webpack-loader/server-replace-async'),
+          },
+          {loader: 'babel-loader', options: {cacheDirectory: true, caller: {runtime: 'server'}}},
+        ],
+      },
+      {
+        test: /\.(less|css)$/,
+        exclude: /\.m\.less$/,
+        loader: 'null-loader',
+      },
+      {
+        test: /\.m\.less$/,
+        include: pathsConfig.moduleSearch,
+        use: cssLoader(true, true),
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: `client/media/${fileName}.[ext]`,
+        },
+      },
+      {
+        test: /\.md$/,
+        loader: 'raw-loader',
+      },
+    ],
+  },
+  plugins: [
+    // new webpack.DefinePlugin({
+    //   'process.env.RUNTIME_ENV': 'SERVER',
+    // }),
+    new webpack.ProgressPlugin(),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  ],
+};
+
+module.exports = [clientConfig, serverConfig];

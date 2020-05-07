@@ -1,5 +1,5 @@
 import {ActionTypes, BaseModelHandlers, BaseModelState, LoadingState, effect, errorAction, reducer} from '@medux/react-web-router';
-import {CommonErrorCode, CustomError} from 'common';
+import {CommonErrorCode, CustomError, isServer} from 'common';
 import {CurUser, LoginRequest, Notices, RegisterRequest, guest} from 'entity/session';
 
 import {HandledError} from 'common';
@@ -8,8 +8,8 @@ import api from './api';
 
 // 定义本模块的State类型
 export interface State extends BaseModelState {
-  projectConfig?: ProjectConfig;
-  curUser?: CurUser;
+  projectConfig: ProjectConfig;
+  curUser: CurUser;
   notices: Notices;
   showLoginOrRegisterPop?: 'login' | 'register';
   showRegistrationAgreement?: boolean;
@@ -21,6 +21,13 @@ export interface State extends BaseModelState {
 // 定义本模块State的初始值
 export const initModelState: State = {
   notices: {count: 0},
+  projectConfig: {tokenRenewalTime: 30000, noticeTimer: 15},
+  curUser: {
+    id: '',
+    username: 'guest',
+    hasLogin: false,
+    avatar: '',
+  },
   loading: {
     global: LoadingState.Stop,
   },
@@ -40,7 +47,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
       if (!this.noticesTimer) {
         this.noticesTimer = setInterval(() => {
           this.getNotice();
-        }, this.state.projectConfig!.noticeTimer * 1000);
+        }, this.state.projectConfig.noticeTimer * 1000);
       }
     }
   }
@@ -69,7 +76,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
     const expired = oCurUser.expired || 0;
     const curUser = await api.login(params);
     const isPop = !!this.state.showLoginOrRegisterPop;
-    if (isPop && oCurUser.id === curUser.id && Date.now() - expired < this.state.projectConfig!.tokenRenewalTime) {
+    if (isPop && oCurUser.id === curUser.id && Date.now() - expired < this.state.projectConfig.tokenRenewalTime) {
       this.dispatch(this.actions.putCurUser(curUser));
       this.dispatch(this.actions.closesLoginOrRegisterPop());
       this.getNoticeTimer();
@@ -105,6 +112,14 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   }
   @effect(null) // 不需要loading，设置为null
   protected async [ActionTypes.Error](error: CustomError) {
+    if (isServer()) {
+      if (error.code === CommonErrorCode.redirect) {
+        throw {code: '301', detail: error.detail};
+      } else {
+        //服务器渲染遇到预期的错误时（例如需要登录），服务器终止渲染，改为client端渲染
+        throw {code: '303'};
+      }
+    }
     //如果仅仅是因为token过期而导致的用户退出，在过期时间较短的情况下，允许用户不刷新页面而弹出登录弹窗，重新登录以续期
     //主要为了不强制打断当前的用户操作流
     if (error.code === CommonErrorCode.unauthorized || error.code === CommonErrorCode.authorizeExpired) {
@@ -119,6 +134,8 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
         historyActions.push(metaKeys.LoginPathname);
       }
       throw new HandledError(error);
+    } else if (error.code === CommonErrorCode.redirect) {
+      historyActions.replace(error.detail);
     } else if (error.code === CommonErrorCode.refresh) {
       location.reload();
       throw new HandledError(error);
@@ -129,6 +146,11 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   }
   @effect(null)
   protected async ['this.Init']() {
+    const projectConfig = await api.getProjectConfig();
+    this.updateState({projectConfig});
+  }
+  @effect()
+  protected async [metaKeys.ClientInitedAction]() {
     window.onunhandledrejection = (e: {reason: any}) => {
       if (e.reason && e.reason.code !== CommonErrorCode.handled) {
         this.dispatch(errorAction(e.reason));
@@ -144,8 +166,6 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
         this.dispatch(errorAction(error));
       }
     };
-    const projectConfig = await api.getProjectConfig();
-    this.updateState({projectConfig});
     const curUser = await api.getCurUser();
     this.dispatch(this.actions.putCurUser(curUser));
     if (curUser.hasLogin) {

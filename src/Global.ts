@@ -2,7 +2,7 @@
 import './Prepose';
 
 import {actions, moduleNames, pageNames} from './modules';
-import {message, metaKeys} from './common';
+import {isServer, message, metaKeys} from './common';
 
 type Actions = typeof actions;
 type MetaKeys = typeof metaKeys;
@@ -20,7 +20,6 @@ declare global {
   type CommonErrorCode = import('./common').CommonErrorCode;
   type DispatchProp = import('react-redux').DispatchProp;
   const module: any;
-  const pageNames: {[key: string]: string};
   const message: Message;
   //初始环境变量放在index.html中, 以防止被 webpack 打包
   const initEnv: {
@@ -28,6 +27,7 @@ declare global {
     staticPath: string;
     apiServerPath: {[key: string]: string};
     production: boolean;
+    pageNames: {[pathname: string]: string};
   };
   const loadView: LoadView;
   const actions: Actions;
@@ -41,7 +41,8 @@ declare global {
 }
 
 ((data: {[key: string]: any}) => {
+  const g = isServer() ? global : window;
   Object.keys(data).forEach((key) => {
-    window[key] = data[key];
+    g[key] = data[key];
   });
-})({actions, moduleNames, message, pageNames});
+})({actions, moduleNames, message});

@@ -13,6 +13,7 @@ import RegisterPop from '../RegisterPop';
 import RegistrationAgreement from '../RegistrationAgreement';
 import {Switch} from '@medux/react-web-router';
 import {connect} from 'react-redux';
+import {isServer} from 'common';
 import moment from 'moment';
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -23,41 +24,33 @@ const ArticleLayout = loadView('articleLayout', 'Main');
 
 interface StoreProps {
   routeViews: RouteViews;
-  projectConfigLoaded: boolean;
-  curUserLoaded: boolean;
 }
 
-const Component: React.FC<StoreProps & DispatchProp> = ({routeViews, projectConfigLoaded, curUserLoaded}) => {
-  const title = `@Medux-${pageNames[location.pathname] || document.title || pageNames['/']}`;
+const Component: React.FC<StoreProps & DispatchProp> = ({routeViews}) => {
+  const title = isServer() ? '' : initEnv.pageNames[location.pathname] || document.title || initEnv.pageNames['/'];
   React.useEffect(() => {
     document.title = title;
   }, [title]);
-  if (projectConfigLoaded && curUserLoaded) {
-    return (
-      <ConfigProvider locale={zhCN}>
-        <Switch elseView={<NotFound />}>
-          {routeViews.app?.LoginPage && <LoginPage />}
-          {routeViews.app?.RegisterPage && <RegisterPage />}
-          {routeViews.adminLayout?.Main && <AdminLayout />}
-          {routeViews.articleLayout?.Main && <ArticleLayout />}
-        </Switch>
-        <GlobalLoading />
-        <RegisterPop />
-        <RegistrationAgreement />
-        <LoginPop />
-      </ConfigProvider>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <ConfigProvider locale={zhCN}>
+      <Switch elseView={<NotFound />}>
+        {routeViews.app?.LoginPage && <LoginPage />}
+        {routeViews.app?.RegisterPage && <RegisterPage />}
+        {routeViews.adminLayout?.Main && <AdminLayout />}
+        {routeViews.articleLayout?.Main && <ArticleLayout />}
+      </Switch>
+      <GlobalLoading />
+      <RegisterPop />
+      <RegistrationAgreement />
+      <LoginPop />
+    </ConfigProvider>
+  );
 };
 
 const mapStateToProps: (state: RootState) => StoreProps = (state) => {
   const app = state.app!;
   return {
     routeViews: state.route.data.views,
-    projectConfigLoaded: !!app.projectConfig,
-    curUserLoaded: !!state.app!.curUser,
   };
 };
 

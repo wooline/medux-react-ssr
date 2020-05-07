@@ -1,11 +1,11 @@
 import {ActionTypes, BaseModelHandlers, BaseModelState, effect, reducer} from '@medux/react-web-router';
 import {MenuItem, menuData} from 'entity/role';
+import {UnauthorizedError, isServer} from 'common';
 
 import {TabNav} from 'entity';
-import {UnauthorizedError} from 'common';
 import {arrayToMap} from 'common/utils';
 
-const tabNavs: TabNav[] = JSON.parse(localStorage.getItem(metaKeys.FavoritesUrlStorageKey) || '[]');
+const tabNavs: TabNav[] = isServer() ? [] : JSON.parse(localStorage.getItem(metaKeys.FavoritesUrlStorageKey) || '[]');
 const tabNavsMap = arrayToMap(tabNavs);
 
 function getTabNavId(url: string): string {
@@ -109,7 +109,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   }
   @effect(null)
   protected async ['this.Init, medux.RouteChange']() {
-    if (this.rootState.route.data.views.adminLayout && !this.rootState.app!.curUser!.hasLogin) {
+    if (this.rootState.route.data.views.adminLayout && !this.rootState.app!.curUser.hasLogin) {
       throw new UnauthorizedError(true);
     }
     const {id, url, title} = getCurTabNav();

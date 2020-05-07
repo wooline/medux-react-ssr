@@ -60,10 +60,13 @@ export const metaKeys = {
   RegisterPathname: '/register',
   UserHomePathname: '/admin/home',
   ArticleHomePathname: '/article/home',
-  ClientInitedAction: 'app/ClientInited',
+  ClientInitedAction: 'app.ClientInited',
   LoginRedirectSessionStorageKey: 'LoginRedirectTo',
   FavoritesUrlStorageKey: 'FavoritesUrl',
 };
+export function isServer(): boolean {
+  return typeof window === 'undefined';
+}
 export const message = {
   success: (content: string) => {
     antdMessage.success(content);
