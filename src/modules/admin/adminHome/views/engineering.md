@@ -6,18 +6,18 @@
 // 注意一下，因为本项目风格检查要求以 LF 为换行符
 // 所以请先关闭 Git 配置中 autocrlf
 git config --global core.autocrlf false
-git clone https://github.com/wooline/medux-react-admin.git
-cd medux-react-admin
+git clone https://github.com/wooline/medux-react-ssr.git
+cd medux-react-ssr
 yarn install
 ```
 
 ### 以开发模式运行
 
-- 首先 copy 一份环境配置：将/conf/dev 目录复制一份并改名为 local，这是本地的项目配置文件，你可以修改里面的配置而不影响其它人。
-- 然后运行 `yarn start`，会自动启动一个开发服务器
+- 运行 `yarn start`，会自动启动一个开发服务器
+- 开发模式时 React 热更新使用最新的 React Fast Refresh 方案，需要安装最新的 React Developer Tools。由于该方案还在进一步完善中，目前出现错误时会有一个 Error Overlay 警告层盖住页面，你可以将它关闭并无视它即可。作者在下个版本中将提供参数屏蔽此层。
 
 ## 代码介绍
 
-- [语雀](https://www.yuque.com/medux/docs/medux-react-admin-2)
+- [语雀](https://www.yuque.com/medux/docs/medux-react-ssr-2)
 
 **欢迎批评指正，觉得还不错的别忘了给个 Star >\_<，如有错误或 Bug 请反馈**

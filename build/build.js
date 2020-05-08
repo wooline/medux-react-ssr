@@ -1,9 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs-extra');
+const chalk = require('chalk');
+const axios = require('axios');
 const pathsConfig = require('./path.conifg');
 const webpackConfig = require('./webpack.config');
 const jsonFormat = require('json-format');
+const childProcess = require('child_process');
 
 require('asset-require-hook')({
   extensions: ['jpg', 'jpeg', 'png', 'gif', 'svg'],
@@ -23,12 +26,12 @@ const envFile = path.join(pathsConfig.distPath, './env.json');
 fs.writeFileSync(envFile, jsonFormat(env, {type: 'space'}), 'utf8');
 
 async function genHtml(sub, htmlDir, server, pages) {
-  for (const pathname in pages) {
+  for (const pathname of pages) {
     const url = `${server}${pathname}`;
-    const fileName = pathname.replace(/\//g, '-') + '.html';
-    console.info(chalk`... {blue ${url}} -> ${fileName}`);
+    const fileName = pathname + '.html';
     const res = await axios.get(url);
-    fs.writeFileSync(path.join(htmlDir, fileName), res.data);
+    console.info(chalk`... {blue ${url}} -> ${fileName}`);
+    fs.outputFileSync(path.join(htmlDir, fileName), res.data);
   }
   sub.kill();
 }
@@ -61,24 +64,15 @@ compiler.run((error, stats) => {
     }
     fs.removeSync(path.join(pathsConfig.distPath, 'server', 'media'));
 
-    //const server = childProcess.fork(path.join(pathsConfig.distPath, './start.js'), [], {cwd: pathsConfig.distPath});
+    const server = childProcess.fork(path.join(pathsConfig.distPath, './start.js'), [], {cwd: pathsConfig.distPath});
 
-    // server.on('message', async (code) => {
-    //   if (code === 1) {
-    //     console.info(chalk`{red ...正在生成静态Html文件...} \n`);
-    //     const htmlDir = path.join(pathsConfig.distPath, 'html');
-    //     fs.mkdirSync(htmlDir);
-    //     genHtml(server, htmlDir, env.server, env.clientGlobal.pageNames);
-    //     // const pages = env.clientGlobal.pageNames;
-    //     // const severUrl = env.server;
-    //     // console.info(chalk`{red ...正在生成静态Html文件...} \n`);
-    //     //
-    //     // axios.get('http://localhost/poster/speak/tts').then(res => {
-    //     //   console.info(chalk`... {blue /poster/speak/tts} \n`);
-    //     //   fs.writeFileSync(path.join(htmlDir, 'index.html'), res.data);
-    //     //   server.kill();
-    //     // });
-    //   }
-    // });
+    server.on('message', async (code) => {
+      if (code === 1) {
+        console.info(chalk`{red ...正在生成静态Html文件...} \n`);
+        const htmlDir = path.join(pathsConfig.distPath, 'html');
+        fs.mkdirSync(htmlDir);
+        genHtml(server, htmlDir, env.server, ['/login', '/register', '/article/home', '/article/service', '/article/about']);
+      }
+    });
   }
 });

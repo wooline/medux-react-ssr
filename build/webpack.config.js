@@ -261,6 +261,7 @@ const serverConfig = {
     minimize: false,
     runtimeChunk: false,
     splitChunks: {
+      chunks: 'initial',
       cacheGroups: {
         vendors: false,
       },
@@ -275,6 +276,7 @@ const serverConfig = {
         use: [
           {
             loader: require.resolve('@medux/dev-utils/dist/webpack-loader/server-replace-async'),
+            options: {modules: ['app', 'adminLayout', 'articleLayout', 'articleHome', 'articleAbout', 'articleService']},
           },
           {loader: 'babel-loader', options: {cacheDirectory: true, caller: {runtime: 'server'}}},
         ],

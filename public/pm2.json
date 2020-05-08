@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "medux-react-admin",
+      "name": "medux-react-ssr",
       "cwd": "./",
       "script": "start.js",
       "error_file": "./logs/app-err.log",

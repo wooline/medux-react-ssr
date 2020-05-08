@@ -1,12 +1,22 @@
-本项目主要用来展示如何将@medux 应用于 web 后台管理系统，你可能看不到丰富的后台 UI 控件及界面，因为这不是重点，网上这样的轮子已经很多了。而本项目想着重表达的是**通用化解题思路**
+本项目是 [**medux-react-admin**](https://github.com/wooline/medux-react-admin) 的 SSR(`服务器渲染同构`) 版，你可以从中看到如何将一个 SinglePage(`单页应用`) 快速转换为支持 SEO 的多页应用。
+
+## 以下页面启用了 SSR
+
+> 请使用鼠标右键点击“查看网页源码”，看是否输出了 Html
+
+- /login
+- /register
+- /article/home
+- /article/service
+- /article/about
 
 ## 项目介绍
 
-- [语雀](https://www.yuque.com/medux/docs/medux-react-admin)
+- [语雀](https://www.yuque.com/medux/docs/medux-react-ssr)
 
 ## 项目地址
 
-- [Github](https://github.com/wooline/medux-react-admin)
+- [Github](https://github.com/wooline/medux-react-ssr)
 
 ## QQ 群交流
 
