@@ -1,11 +1,11 @@
 import 'Global';
 
+import {buildApp, errorAction} from '@medux/react-web-router';
 import {defaultRouteParams, moduleGetter, routeConfig} from 'modules';
 
+import {CommonErrorCode} from './common';
 import {Store} from 'redux';
-import {buildApp} from '@medux/react-web-router';
 import {createBrowserHistory} from 'history';
-import {metaKeys} from './common';
 
 if (initEnv.production) {
   (window as any).console = {
@@ -31,7 +31,21 @@ buildApp({
     return store;
   },
 }).then(() => {
-  singleStore.dispatch({type: metaKeys.ClientInitedAction});
+  window.onunhandledrejection = (e: {reason: any}) => {
+    if (e.reason && e.reason.code !== CommonErrorCode.handled) {
+      singleStore.dispatch(errorAction(e.reason));
+    }
+  };
+  window.onerror = (message: any, url: any, line: any, column: any, error: any) => {
+    if (!error) {
+      console.error(message);
+      return;
+    }
+    if (error.code !== CommonErrorCode.handled && !error.dispatched) {
+      error.dispatched = true;
+      singleStore.dispatch(errorAction(error));
+    }
+  };
   const initLoading = document.getElementById('g-init-loading');
   initLoading && initLoading.parentNode!.removeChild(initLoading);
 });

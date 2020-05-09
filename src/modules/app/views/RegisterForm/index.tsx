@@ -114,9 +114,9 @@ const Component: React.FC<StoreProps & DispatchProp> = ({curUser, isPop, dispatc
             </span>
             <div className="login">
               已有帐户？
-              <span className="link" onClick={handleLogin}>
+              <a href={metaKeys.LoginPathname} className="link" onClick={handleLogin}>
                 登录
-              </span>
+              </a>
             </div>
             <Button size="large" type="primary" htmlType="submit" className="submit">
               提交注册

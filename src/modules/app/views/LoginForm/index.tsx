@@ -77,9 +77,9 @@ const Component: React.FC<StoreProps & DispatchProp> = ({curUser, isPop, dispatc
             <Form.Item {...fromDecorators.keep} noStyle>
               <Checkbox>自动登录</Checkbox>
             </Form.Item>
-            <span className="register link" onClick={handleRegister}>
+            <a className="register link" href={metaKeys.RegisterPathname} onClick={handleRegister}>
               注册新用户
-            </span>
+            </a>
             <Button size="large" type="primary" htmlType="submit" className="submit">
               立即登录
             </Button>

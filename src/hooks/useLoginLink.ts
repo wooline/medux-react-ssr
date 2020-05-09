@@ -9,21 +9,29 @@ export default function (isPop: boolean, dispatch: (action: any) => void) {
     dispatch(actions.app.logout());
   }, [dispatch]);
 
-  const handleRegister = useCallback(() => {
-    if (isPop) {
-      dispatch(actions.app.openLoginOrRegisterPop('register'));
-    } else {
-      historyActions.push(metaKeys.RegisterPathname);
-    }
-  }, [dispatch, isPop]);
+  const handleRegister = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      if (isPop) {
+        dispatch(actions.app.openLoginOrRegisterPop('register'));
+      } else {
+        historyActions.push(metaKeys.RegisterPathname);
+      }
+    },
+    [dispatch, isPop]
+  );
 
-  const handleLogin = useCallback(() => {
-    if (isPop) {
-      dispatch(actions.app.openLoginOrRegisterPop('login'));
-    } else {
-      historyActions.push(metaKeys.LoginPathname);
-    }
-  }, [dispatch, isPop]);
+  const handleLogin = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      if (isPop) {
+        dispatch(actions.app.openLoginOrRegisterPop('login'));
+      } else {
+        historyActions.push(metaKeys.LoginPathname);
+      }
+    },
+    [dispatch, isPop]
+  );
 
   return {handleUserHome, handleLogout, handleRegister, handleLogin};
 }

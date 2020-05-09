@@ -1,3 +1,4 @@
+//生成环境请使用nginx反向代理
 const express = require('express');
 const chalk = require('chalk');
 const fs = require('fs');

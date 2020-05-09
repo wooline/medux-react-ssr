@@ -1,4 +1,4 @@
-import {ActionTypes, BaseModelHandlers, BaseModelState, LoadingState, effect, errorAction, reducer} from '@medux/react-web-router';
+import {ActionTypes, BaseModelHandlers, BaseModelState, LoadingState, effect, reducer} from '@medux/react-web-router';
 import {CommonErrorCode, CustomError, isServer} from 'common';
 import {CurUser, LoginRequest, Notices, RegisterRequest, guest} from 'entity/session';
 
@@ -146,31 +146,26 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   }
   @effect(null)
   protected async ['this.Init']() {
-    const projectConfig = await api.getProjectConfig();
-    this.updateState({projectConfig});
-  }
-  @effect()
-  protected async [metaKeys.ClientInitedAction]() {
-    window.onunhandledrejection = (e: {reason: any}) => {
-      if (e.reason && e.reason.code !== CommonErrorCode.handled) {
-        this.dispatch(errorAction(e.reason));
+    if (this.state.isHydrate) {
+      //如果已经经过SSR服务器渲染，该段代码只会运行在client端
+      const curUser = await api.getCurUser();
+      this.dispatch(this.actions.putCurUser(curUser));
+      if (curUser.hasLogin) {
+        this.getNoticeTimer();
+        this.checkLoginRedirect();
       }
-    };
-    window.onerror = (message: any, url: any, line: any, column: any, error: any) => {
-      if (!error) {
-        console.error(message);
-        return;
+    } else {
+      //如果是初次渲染，可能运行在client端也可能运行在server端
+      const projectConfig = await api.getProjectConfig();
+      this.updateState({projectConfig});
+      if (!isServer()) {
+        const curUser = await api.getCurUser();
+        this.dispatch(this.actions.putCurUser(curUser));
+        if (curUser.hasLogin) {
+          this.getNoticeTimer();
+          this.checkLoginRedirect();
+        }
       }
-      if (error.code !== CommonErrorCode.handled && !error.dispatched) {
-        error.dispatched = true;
-        this.dispatch(errorAction(error));
-      }
-    };
-    const curUser = await api.getCurUser();
-    this.dispatch(this.actions.putCurUser(curUser));
-    if (curUser.hasLogin) {
-      this.getNoticeTimer();
-      this.checkLoginRedirect();
     }
   }
 }
