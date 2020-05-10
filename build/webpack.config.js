@@ -158,7 +158,14 @@ const clientConfig = {
         include: pathsConfig.moduleSearch,
         use: [
           {loader: require.resolve('@medux/dev-utils/dist/webpack-loader/module-hot-loader')},
-          {loader: 'babel-loader', options: {cacheDirectory: true, caller: {runtime: 'client'}}},
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              plugins: [!prodModel && require.resolve('react-refresh/babel')].filter(Boolean),
+              caller: {runtime: 'client'},
+            },
+          },
           {loader: 'eslint-loader', options: {cache: true}},
         ],
       },
