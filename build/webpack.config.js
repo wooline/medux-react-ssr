@@ -251,8 +251,8 @@ const serverConfig = {
   output: {
     libraryTarget: 'commonjs2',
     path: pathsConfig.distPath,
-    filename: 'server/[name].js',
-    chunkFilename: 'server/[name].chunk.js',
+    filename: 'server/js/[name].js',
+    chunkFilename: 'server/js/[name].chunk.js',
     publicPath: '/',
     // Point sourcemap entries to original disk location (format as URL on Windows)
     devtoolModuleFilenameTemplate: (info) => path.relative(pathsConfig.srcPath, info.absoluteResourcePath).replace(/\\/g, '/'),

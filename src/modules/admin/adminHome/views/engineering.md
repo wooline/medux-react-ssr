@@ -16,8 +16,7 @@ yarn install
 - 运行 `yarn start`，会自动启动一个开发服务器
 - 开发模式时 React 热更新使用最新的 React Fast Refresh 方案，需要安装最新的 React Developer Tools。
 
-## 代码介绍
+### 以产品模式运行
 
-- [语雀](https://www.yuque.com/medux/docs/medux-react-ssr-2)
-
-**欢迎批评指正，觉得还不错的别忘了给个 Star >\_<，如有错误或 Bug 请反馈**
+- 首先运行 yarn build-local，会将代码编译到 /dist/local 目录
+- 然后进入 /dist/local 目录下，运行 node start.js，会启动一个产品服务器 Demo，但是真正线上运行建议使用 Nginx，输出目录中有 Nginx 配置样例可供参考

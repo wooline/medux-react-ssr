@@ -113,10 +113,12 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   @effect(null) // 不需要loading，设置为null
   protected async [ActionTypes.Error](error: CustomError) {
     if (isServer()) {
+      //服务器中间件会catch 301错误，跳转URL
       if (error.code === CommonErrorCode.redirect) {
         throw {code: '301', detail: error.detail};
       } else {
-        //服务器渲染遇到预期的错误时（例如需要登录），服务器终止渲染，改为client端渲染
+        //服务器渲染遇到预期的错误时（例如需要登录），服务器直接终止渲染，改为client端渲染
+        //服务器中间件会catch 303错误，直接发送统一的 index.html
         throw {code: '303'};
       }
     }
@@ -147,7 +149,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
   @effect(null)
   protected async ['this.Init']() {
     if (this.state.isHydrate) {
-      //如果已经经过SSR服务器渲染，该段代码只会运行在client端
+      //如果已经经过SSR服务器渲染，那么getProjectConfig()无需执行了
       const curUser = await api.getCurUser();
       this.dispatch(this.actions.putCurUser(curUser));
       if (curUser.hasLogin) {
@@ -158,6 +160,7 @@ export class ModelHandlers extends BaseModelHandlers<State, RootState> {
       //如果是初次渲染，可能运行在client端也可能运行在server端
       const projectConfig = await api.getProjectConfig();
       this.updateState({projectConfig});
+      //服务端都是游客，无需获取用户信息
       if (!isServer()) {
         const curUser = await api.getCurUser();
         this.dispatch(this.actions.putCurUser(curUser));

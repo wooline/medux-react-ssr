@@ -62,7 +62,9 @@ compiler.run((error, stats) => {
         process.exit(1);
       }
     }
+    fs.copySync(path.join(pathsConfig.distPath, 'server', 'js/main.js'), path.join(pathsConfig.distPath, 'server', 'main.js'));
     fs.removeSync(path.join(pathsConfig.distPath, 'server', 'media'));
+    fs.removeSync(path.join(pathsConfig.distPath, 'server', 'js'));
 
     const server = childProcess.fork(path.join(pathsConfig.distPath, './start.js'), [], {cwd: pathsConfig.distPath});
 

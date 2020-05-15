@@ -1,6 +1,6 @@
 # 项目介绍
 
-本项目是 [**medux-react-admin**](https://github.com/wooline/medux-react-admin) 的 SSR(`服务器渲染同构`) 版，你可以从中看到如何将一个 SinglePage(`单页应用`) 快速转换为支持 SEO 的多页应用。
+本项目是 [**medux-react-admin**](https://github.com/wooline/medux-react-admin) 的 SSR(`服务器同构渲染`) 版，你可以从中看到如何将一个 SinglePage(`单页应用`) 快速转换为支持 SEO 的多页应用。
 
 - [**在线预览**](http://medux-react-ssr.80zp.com)
 
@@ -12,13 +12,7 @@
 - [/article/service](http://medux-react-ssr.80zp.com/article/service)
 - [/article/about](http://medux-react-ssr.80zp.com/article/about)
 
-### 查看更多项目介绍
-
-- [语雀](https://www.yuque.com/medux/docs/medux-react-ssr)
-
 # 安装及运行
-
-本项目使用[@medux/react-web-router](https://github.com/wooline/medux/tree/master/packages/react-web-router) + [ANTD 4](https://ant.design/index-cn) 开发，全程使用 React Hooks，并配备了比较完善的脚手架。
 
 ```
 // 注意一下，因为本项目风格检查要求以 LF 为换行符
@@ -29,14 +23,19 @@ cd medux-react-ssr
 yarn install
 ```
 
-### 以开发模式运行
+## 以开发模式运行
 
 - 运行 `yarn start`，会自动启动一个开发服务器。
 - 开发模式时 React 热更新使用最新的 [React Fast Refresh](https://www.npmjs.com/package/react-refresh) 方案，需要安装最新的 React Developer Tools。
 
-### 查看更多代码说明
+## 以产品模式运行
 
-- [语雀](https://www.yuque.com/medux/docs/medux-react-ssr-2)
+- 首先运行 yarn build-local，会将代码编译到 /dist/local 目录
+- 然后进入 /dist/local 目录下，运行 node start.js，会启动一个产品服务器 Demo，但是真正线上运行建议使用 Nginx，输出目录中有 Nginx 配置样例可供参考
+
+# 查看更多项目介绍
+
+- [语雀](https://www.yuque.com/medux/docs/medux-react-ssr)
 
 ---
 
