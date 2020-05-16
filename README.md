@@ -35,6 +35,8 @@ yarn install
 
 # 查看更多项目介绍
 
+- [掘金](https://juejin.im/post/5ebeccfce51d454ddc10255a)
+- [知乎](https://zhuanlan.zhihu.com/p/141399763)
 - [语雀](https://www.yuque.com/medux/docs/medux-react-ssr)
 
 ---
