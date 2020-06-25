@@ -1,4 +1,4 @@
-import {BaseListItem, BaseListSearch, BaseListSummary, CommonResource, CommonResourceRouteParams} from './index';
+import {BaseListItem, BaseListSearch, BaseListSummary, CommonResource, CommonResourceRouteParams, ItemView} from './index';
 
 export const purviewNames: {[key: string]: string} = {
   role: '角色',
@@ -47,15 +47,15 @@ export const menuData: MenuItem[] = [
     icon: 'user',
     keys: 'member',
     children: [
-      {name: '用户列表', keys: ['/admin/member/list', '/admin/member/list/detail/:id'], link: '/admin/member/list#q=%7B"adminMember"%3A%7B"_listKey"%3A"${listKey}"%7D%7D'},
-      {name: '角色管理', keys: '/admin/role/list#q=%7B"adminRole"%3A%7B"_listKey"%3A"${listKey}"%7D%7D'},
+      {name: '用户列表', keys: ['/admin/member/list', '/admin/member/list/detail/:id'], link: '/admin/member/list#q=%7B"adminMember"%3A%7B"_listVer"%3A${listVer}%7D%7D'},
+      {name: '角色管理', keys: '/admin/role/list#q=%7B"adminRole"%3A%7B"_listVer"%3A${listVer}%7D%7D'},
     ],
   },
   {
     name: '信息管理',
     icon: 'post',
     keys: '/admin/finance',
-    children: [{name: '信息列表', keys: ['/admin/post/list', '/admin/post/list/detail/:id'], link: '/admin/post/list#q=%7B"adminPost"%3A%7B"_listKey"%3A"${listKey}"%7D%7D'}],
+    children: [{name: '信息列表', keys: ['/admin/post/list', '/admin/post/list/detail/:id'], link: '/admin/post/list#q=%7B"adminPost"%3A%7B"_listVer"%3A${listVer}%7D%7D'}],
   },
 ];
 export interface ListSearch extends BaseListSearch {
@@ -89,5 +89,24 @@ export interface Resource extends CommonResource {
   ListSearch: ListSearch;
   ListItem: ListItem;
   ListSummary: ListSummary;
+  ItemDetail: ItemDetail;
   UpdateItem: UpdateItem;
 }
+
+export const defaultRouteParams: RouteParams = {
+  listSearch: {
+    pageSize: 10,
+    pageCurrent: 1,
+    term: undefined,
+    category: undefined,
+    sorterField: undefined,
+    sorterOrder: undefined,
+    roleName: undefined,
+    purviews: undefined,
+  },
+  listView: '',
+  _listVer: 0,
+  itemId: '',
+  itemView: '',
+  _itemVer: 0,
+};

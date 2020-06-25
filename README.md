@@ -23,6 +23,10 @@ cd medux-react-ssr
 yarn install
 ```
 
+# 更新日志
+
+- [2020-06-25 v1.1.0](https://github.com/wooline/medux-react-ssr/blob/master/CHANGELOG.md)
+
 ## 以开发模式运行
 
 - 运行 `yarn start`，会自动启动一个开发服务器。

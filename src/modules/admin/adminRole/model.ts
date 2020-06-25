@@ -1,8 +1,7 @@
 import {CommonResourceHandlers, CommonResourceState} from 'common/resource';
+import {Resource, defaultRouteParams} from 'entity/role';
 
-import {Resource} from 'entity/role';
 import api from './api';
-import defaultRouteParams from './meta';
 
 export interface State extends CommonResourceState<Resource> {}
 
